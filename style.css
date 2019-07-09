@@ -2,34 +2,30 @@ html{
     background-color: #ffdd99;
 }
 
-.header-style{
+.header{
     width: 100%;
     color: #ffdd99;
     background-color: #336600;
     text-align: center;
 }
-
-.header-style h1{
+.header h1{
     padding: 10px;
-    font-size: 50px;
+    font-size: 3.5em;
 }
 
-.nav-style{
-    
-}
 
-.nav-style ul{
+.nav ul{
     background-color: #336600;
     text-align: center;
     margin: 0px;
-    padding: 0px;
+    padding: 10px;
     overflow: hidden;
 }
 
-.nav-style ul li{
+.nav ul li{
     display: inline;
     text-align: center;
-    font-size: 30px;
+    font-size: 2em;
     padding: 40px;
     color: #ffdd99;
 }
@@ -37,13 +33,13 @@ html{
 .ext{
     display: inline;
     text-align: center;
-    font-size: 30px;
+    font-size: 2em;
     padding: 40px;
     color: #ffdd99;
 }
 
 
-.nav-style ul li:hover{
+.nav ul li:hover{
     background-color: #001a13;
 }
 
@@ -51,23 +47,24 @@ html{
     background-color: #336600;
 }
 
-.nav-style ul li a{
+.nav ul li a{
     color: #ffdd99;
     text-decoration: none;
 }
 
-.main-style{
+.main{
     text-align: center;
-    font-size: 35px;
+    font-size: 2.6em;
 }
 
-.footer-style{
+.footer{
     background-color: #336600;
+    padding: 10px;
 }
 
-.footer-style p{
+.footer p{
     margin: 50px;
-    padding: 20px;
+    padding: 50px;
     text-align: right;
     display: inline;
     margin: 20px;
