@@ -1,0 +1,145 @@
+:root {
+    --main-background-color: #ffdd99;
+    --other-background-color: #336600;
+    --text-color: #ffdd99;
+    --nice-black-color: #001a13;
+    --pop-color: #15945f;
+}
+
+.align-center {
+    text-align: center;
+}
+
+html {
+    background-color: var(--main-background-color);
+}
+
+header {
+    width: 100%;
+    background-color: var(--other-background-color);
+}
+
+header h1 {
+    padding: 10px;
+    font-size: 3.5em;
+    color: var(--main-background-color)
+}
+
+nav ul {
+    background-color: var(--other-background-color);
+    margin: 0px;
+    padding: 10px;
+    overflow: hidden;
+}
+
+nav ul li {
+    display: inline;
+    font-size: 2em;
+    padding: 40px;
+    color: var(--text-color);
+}
+
+nav ul li:hover {
+    background-color: var(--nice-black-color);
+}
+
+nav ul li a {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.separator {
+    display: inline;
+    font-size: 2em;
+    padding: 40px;
+    color: var(--text-color);
+}
+
+footer {
+    background-color: var(--other-background-color);
+    padding: 10px;
+}
+
+footer p {
+    padding: 50px;
+    margin: 20px;
+    text-align: right;
+    display: inline;
+    color: var(--text-color);
+}
+
+.person-field {
+    /* to do */
+    padding: 10px;
+    border: 2px solid black;
+    border-radius: 25px;
+    margin: 2px;
+}
+.person-field:hover {
+    background-color: var(--pop-color);
+    color: var(--text-color);
+    transform: scale(1.05);
+}
+
+.no-likes {
+    display: inline-block;
+    margin: 2px;
+    margin: -50px 0px 0px 17px; 
+}
+
+.star {
+    position: relative;
+    top: 24.5px;
+    right: 8.4px;
+    width: 25px;
+    height: 25px;
+}
+
+.avatar {
+    vertical-align: middle;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin: 0px 10px 0px 16px;
+}
+
+.list {
+    list-style-type: none;
+    padding:  10px 10px 10px 10px;
+}
+
+.trash {
+    width: 25px;
+    height: 25px;
+    margin: 0px 0px 0px 10px;
+    position: relative;
+    top: 3px;
+    float: right;
+}
+
+.favourites {
+    border: 2px solid black;
+    display: inline-block;
+    margin: 2px;
+    width: 50%;
+    height: 515.03px;
+    border-radius: 25px;
+    
+}
+
+.contacts {
+    border: 2px solid black;
+    display:  inline-block;
+    margin: 2px;
+    width: 48%;
+    height: 515.03px;
+    border-radius: 25px;
+}
+
+.block {
+    display: flex;
+}
+
+.full-name {
+    margin: 0px 10px 0px 13px;
+}
