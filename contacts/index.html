@@ -154,6 +154,9 @@
 
 
           </ul>
+          <div class="align-center">
+            <button class="button">Delete All</button>
+          </div>
         </div>
 
         <div class="favourites">
@@ -169,21 +172,27 @@
                 <p class="align-center">work in progress</p>
             </li>
           </ol>
+          <div class="align-center">
+            <button class="button">Clear</button>
+          </div>
         </div>
       </div>
 
-      <h3>Add new contact</h3>
-      <form>
+      <form class="add">
+        <h2 class="align-center">Add new contact</h2>
         <label>First name:</label>
-        <input name="first_name" value="">
+        <br>
+        <input name="first_name" placeholder="Your first name" maxlength="20">
         <br>
         <label>Last name:</label>
-        <input name="last_name" value="">
+        <br>
+        <input name="last_name" placeholder="Your last name" maxlength="20">
         <br>
         <label>Profile image:</label>
-        <input type="file" name="profile_img">
         <br>
-        <input type="submit">
+        <input type="url" name="profile_img" placeholder="Your image">
+        <br>
+        <input type="submit" class="button">
       </form> 
     </main>
 

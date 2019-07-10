@@ -58,6 +58,7 @@ nav ul li a {
 footer {
     background-color: var(--other-background-color);
     padding: 10px;
+    margin: 2px;
 }
 
 footer p {
@@ -106,6 +107,13 @@ footer p {
 .list {
     list-style-type: none;
     padding:  10px 10px 10px 10px;
+    display: block;
+    margin: 0px
+}
+
+
+body {
+    background-color: var(--main-background-color);
 }
 
 .trash {
@@ -122,17 +130,16 @@ footer p {
     display: inline-block;
     margin: 2px;
     width: 50%;
-    height: 515.03px;
+    height: 530px;
     border-radius: 25px;
-    
 }
 
 .contacts {
     border: 2px solid black;
     display:  inline-block;
     margin: 2px;
-    width: 48%;
-    height: 515.03px;
+    width: 48.2%;
+    height: 530px;
     border-radius: 25px;
 }
 
@@ -142,4 +149,26 @@ footer p {
 
 .full-name {
     margin: 0px 10px 0px 13px;
+}
+
+.button { 
+    margin: 8px 0px 16px 0px;
+    border-radius: 25px;
+    background-color: var(--pop-color);
+    color: var(--main-background-color)
+}
+
+.add {
+    border: 2px solid black;
+    border-radius: 25px;
+    padding: 30px;
+    width: 30%;
+}
+
+.add h3 {
+    margin: 0px 0px 23px 0px;
+}
+
+.add input {
+    margin: 18px;
 }
