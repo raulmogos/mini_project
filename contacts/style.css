@@ -67,6 +67,8 @@ nav ul li a {
 footer {
     background-color: var(--other-background-color);
     padding: 10px;
+    border: 2px solid black;
+    border-radius: 25px;
     margin: 2px;
 }
 
