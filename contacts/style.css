@@ -17,12 +17,19 @@ html {
 header {
     width: 100%;
     background-color: var(--other-background-color);
+    border: 2px solid black;
+    border-radius: 25px;
+    margin: 2px;
 }
 
 header h1 {
-    padding: 10px;
+    padding: 0px;
     font-size: 3.5em;
     color: var(--main-background-color)
+}
+
+nav {
+    margin: 2px;
 }
 
 nav ul {
@@ -30,6 +37,8 @@ nav ul {
     margin: 0px;
     padding: 10px;
     overflow: hidden;
+    border: 2px solid black;
+    border-radius: 25px;
 }
 
 nav ul li {
@@ -51,7 +60,7 @@ nav ul li a {
 .separator {
     display: inline;
     font-size: 2em;
-    padding: 40px;
+    padding: 0px;
     color: var(--text-color);
 }
 
@@ -76,6 +85,7 @@ footer p {
     border-radius: 25px;
     margin: 2px;
 }
+
 .person-field:hover {
     background-color: var(--pop-color);
     color: var(--text-color);
@@ -84,16 +94,26 @@ footer p {
 
 .no-likes {
     display: inline-block;
-    margin: 2px;
-    margin: -50px 0px 0px 17px; 
+    margin: 5px 10px 0px 10px;
+    padding: 15px 0px 0px 0px;
+    position: relative;
+    width: 40px;
+    height: 34px;
+    background: url(images/star.png);
+    background-size: 40px;
+    background-repeat: no-repeat;
 }
 
 .star {
     position: relative;
-    top: 24.5px;
-    right: 8.4px;
-    width: 25px;
-    height: 25px;
+}
+
+.number {
+    position: relative;
+    text-align: center;
+    width: 100%;
+    top: 20%;
+    transform: translate(0%, -50%);
 }
 
 .avatar {
@@ -111,7 +131,6 @@ footer p {
     margin: 0px
 }
 
-
 body {
     background-color: var(--main-background-color);
 }
@@ -119,7 +138,7 @@ body {
 .trash {
     width: 25px;
     height: 25px;
-    margin: 0px 0px 0px 10px;
+    margin: 13px 0px 0px 10px;
     position: relative;
     top: 3px;
     float: right;
@@ -128,19 +147,21 @@ body {
 .favourites {
     border: 2px solid black;
     display: inline-block;
-    margin: 2px;
+    margin: 0.5%;
     width: 50%;
-    height: 530px;
+    height: 100%;
     border-radius: 25px;
+    position: relative;
 }
 
 .contacts {
     border: 2px solid black;
     display:  inline-block;
-    margin: 2px;
-    width: 48.2%;
-    height: 530px;
+    margin: 0.5%;
+    width: 50%;
+    height: 100%;
     border-radius: 25px;
+    position: relative;
 }
 
 .block {
@@ -162,7 +183,8 @@ body {
     border: 2px solid black;
     border-radius: 25px;
     padding: 30px;
-    width: 30%;
+    width: 45%;
+    margin: 0.5%
 }
 
 .add h3 {
