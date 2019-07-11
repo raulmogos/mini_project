@@ -14,7 +14,6 @@ html {
 }
 
 header {
-    width: 100%;
     background-color: var(--other-background-color);
     border: 2px solid black;
     border-radius: 25px;
