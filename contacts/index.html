@@ -26,6 +26,8 @@
           <h2 class="align-center type-title">Contacts</h2>
 
           <ul class="list">
+            <!--
+
             <li class="person-field">
               <button>+</button>
               <div class="favs-count">0</div>
@@ -116,6 +118,9 @@
               </span>
               <img src="images/trash-1.png" alt="trash" class="trash">
             </li>
+
+            -->
+          
           </ul>
 
           <div class="align-center">
@@ -140,15 +145,15 @@
       <form class="add">
         <h2 class="align-center">Add new contact</h2>
         <div>
-          <input name="first_name" placeholder="Your first name" maxlength="20">
+          <input id="first-name" name="first_name" placeholder="Your first name" maxlength="20">
         </div>
         <div>
-          <input name="last_name" placeholder="Your last name" maxlength="20">
+          <input id="last-name" name="last_name" placeholder="Your last name" maxlength="20">
         </div>
         <div>
-          <input type="url" name="profile_img" placeholder="Your profile image">
+          <input id="profile-image" type="url" name="profile_img" placeholder="Your profile image">
         </div>
-        <button id="add-button" class="button">Add</button>
+        <button id="add-button" class="button" type="button">Add</button>
       </form>
 
     </main>
