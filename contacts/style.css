@@ -70,8 +70,8 @@ footer {
 }
 
 footer p {
-    padding: 50px;
-    margin: 20px;
+    padding: 0px 50px;
+    margin: 0px 20px;
     text-align: right;
     display: inline;
     color: var(--text-color);
