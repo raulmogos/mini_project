@@ -14,14 +14,19 @@ html {
 }
 
 header {
-    width: 100%;
     background-color: var(--other-background-color);
+    border: 2px solid black;
+    border-radius: 25px;
+    margin: 2px;
 }
 
 header h1 {
-    padding: 10px;
     font-size: 3.5em;
     color: var(--main-background-color)
+}
+
+nav {
+    margin: 2px;
 }
 
 nav ul {
@@ -29,6 +34,8 @@ nav ul {
     margin: 0px;
     padding: 10px;
     overflow: hidden;
+    border: 2px solid black;
+    border-radius: 25px;
 }
 
 nav ul li {
@@ -50,7 +57,6 @@ nav ul li a {
 .separator {
     display: inline;
     font-size: 2em;
-    padding: 40px;
     color: var(--text-color);
 }
 
@@ -61,6 +67,9 @@ main {
 footer {
     background-color: var(--other-background-color);
     padding: 10px;
+    border: 2px solid black;
+    border-radius: 25px;
+    margin: 2px;
 }
 
 footer p {
