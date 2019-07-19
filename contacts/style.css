@@ -81,7 +81,7 @@ footer p {
     border: 2px solid black;
     border-radius: 25px;
     margin: 2px;
-    display:flex;
+    display: flex;
     align-items: center;
     padding: 20px;
 }
@@ -145,7 +145,6 @@ body {
     display: inline-block;
     margin: 0.5%;
     width: 50%;
-    height: 100%;
     border-radius: 25px;
     position: relative;
 }
@@ -159,7 +158,7 @@ body {
     width: 50%;
 }
 
-.button { 
+.button {
     margin: 8px 0px 16px 0px;
     border-radius: 25px;
     background-color: var(--pop-color);
@@ -184,7 +183,15 @@ body {
 }
 
 @media only screen and (max-width: 950px) {
-    .contacts { width:100%; }
-    .favourites { width:100%; }
-    .block { flex-direction: column; }
+    .contacts {
+        width: 100%;
+    }
+
+    .favourites {
+        width: 100%;
+    }
+
+    .block {
+        flex-direction: column;
+    }
 }

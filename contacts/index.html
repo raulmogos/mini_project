@@ -3,6 +3,7 @@
   <head>
     <title>Chat Room</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="">
   </head>
 
   <body>
@@ -25,7 +26,7 @@
         <div class="contacts">
           <h2 class="align-center type-title">Contacts</h2>
 
-          <ul class="list">
+          <ul id="contacts-list" class="list" onclick="eventsHandlerContacts(event)">
             <!--
 
             <li class="person-field">
@@ -54,71 +55,6 @@
               <img src="images/trash-1.png" alt="trash" class="trash">
             </li>
 
-            <li class="person-field">
-              <button>+</button>
-              <div class="favs-count">0</div>
-              <button>-</button>
-              <img src="images/profile-pics/pic3.jfif" alt="pic1" class="avatar">
-              <input type="checkbox">
-              <span class="full-name">
-                <span>Carlson</span>
-                <span>Annette</span>
-              </span>
-              <img src="images/trash-1.png" alt="trash" class="trash">
-            </li>
-
-            <li class="person-field">
-              <button>+</button>
-              <div class="favs-count">0</div>
-              <button>-</button>
-              <img src="images/profile-pics/pic4.jfif" alt="pic1" class="avatar">
-              <input type="checkbox">
-              <span class="full-name">
-                <span>Watkins</span>
-                <span>Ervin</span>
-              </span>
-              <img src="images/trash-1.png" alt="trash" class="trash">
-            </li>
-
-            <li class="person-field">
-              <button>+</button>
-              <div class="favs-count">0</div>
-              <button>-</button>
-              <img src="images/profile-pics/pic5.jfif" alt="pic1" class="avatar">
-              <input type="checkbox">
-              <span class="full-name">
-                <span>Pope</span>
-                <span>Philip</span>
-              </span>
-              <img src="images/trash-1.png" alt="trash" class="trash">
-            </li>
-
-            <li class="person-field">
-              <button>+</button>
-              <div class="favs-count">0</div>
-              <button>-</button>
-              <img src="images/profile-pics/pic6.jfif" alt="pic1" class="avatar">
-              <input type="checkbox">
-              <span class="full-name">
-                <span>Viorel</span>
-                <span>Popescu</span>
-              </span>
-              <img src="images/trash-1.png" alt="trash" class="trash">
-            </li>
-
-            <li class="person-field">
-              <button>+</button>
-              <div class="favs-count">0</div>
-              <button>-</button>
-              <img src="images/profile-pics/pic7.jfif" alt="pic1" class="avatar">
-              <input type="checkbox">
-              <span class="full-name">
-                <span>Elon</span>
-                <span>Musk</span>
-              </span>
-              <img src="images/trash-1.png" alt="trash" class="trash">
-            </li>
-
             -->
           
           </ul>
@@ -131,12 +67,12 @@
         <div class="favourites">
           <h2 class="align-center type-title">Favourites</h2>
 
-          <ol class="list">
+          <ol id="favs-list" class="list">
             
           </ol>
 
           <div class="align-center">
-            <button class="button">Clear</button>
+            <button id="clear-button" class="button">Clear</button>
           </div>
 
         </div>
