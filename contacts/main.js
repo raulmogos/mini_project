@@ -95,11 +95,12 @@ function getListOfContacts() {
   return array;
 }
 
-function saveDataToLocalStorage(){
+function saveDataToLocalStorage() {
   localStorage.setItem('contacts', JSON.stringify(contactsList));
 }
-function getContactsFromLocalStorage(){
-  return JSON.parse( localStorage.getItem('contacts'));
+
+function getContactsFromLocalStorage() {
+  return JSON.parse(localStorage.getItem('contacts'));
 }
 
 function populateContactsListHTML() {
@@ -226,7 +227,7 @@ function deleteAllButtonAction() {
     refreshFavsList();
     rerenderContacts();
     resetDeleteAllButtonValueAndState();
-  }else{
+  } else {
     clearSelectedBoxes();
     resetDeleteAllButtonValueAndState();
   }
@@ -258,8 +259,8 @@ function getSelectedContactsIDs() {
 
 function clearSelectedBoxes() {
   let ch = getSelectedContactsIDs();
-  ch.forEach((id)=>{
-    let buttonId = 'checkbox-'+ id;
+  ch.forEach((id) => {
+    let buttonId = 'checkbox-' + id;
     document.getElementById(buttonId).checked = false;
   })
 }
@@ -271,12 +272,14 @@ function validateFirstNameInput(firstName) {
   if (!isValid)
     throw new EvalError('Your first name contains special characters');
 }
+
 function validaetLastNameInput(lastName) {
   let regex = /^[A-Za-z0-9 ]+$/;
   let isValid = regex.test(lastName);
   if (!isValid)
     throw new EvalError('Your last name contains special characters');
 }
+
 function validateImageUrl(imageUrl) {
   let pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
   let isValid = pattern.test(imageUrl);
@@ -290,12 +293,14 @@ function getFirstNameInput() {
   validateFirstNameInput(firstName);
   return firstName;
 }
+
 function getLastNameInput() {
   let lastName = document.getElementById('last-name').value;
   document.getElementById('last-name').value = '';
   validaetLastNameInput(lastName);
   return lastName;
 }
+
 function getImageProfileInput() {
   let image = document.getElementById('profile-image').value;
   document.getElementById('profile-image').value = '';
@@ -434,8 +439,7 @@ function changeDeleteAllButtonValueAndState() {
   if (numberOfCheckedContacts != 0) {
     button.innerHTML = 'Delete All ' + numberOfCheckedContacts.toString();
     button.disabled = false;
-  }
-  else{
+  } else {
     button.innerHTML = 'Delete All';
     button.disabled = true;
   }
@@ -454,6 +458,7 @@ function deletePerson(personId) {
       break;
     }
 }
+
 function incrementLikes(personId) {
   for (let i = 0; i < contactsList.length; i++)
     if (contactsList[i].id === personId) {
@@ -463,6 +468,7 @@ function incrementLikes(personId) {
       }
     }
 }
+
 function decrementLikes(personId) {
   for (let i = 0; i < contactsList.length; i++)
     if (contactsList[i].id === personId) {
@@ -472,24 +478,31 @@ function decrementLikes(personId) {
       }
     }
 }
+
 function addNewPerson() {
-  try{
+  try {
     let newPerson = getTheNewPerson();
     contactsList.push(newPerson);
     rerenderContacts(contactsList);
     changeAddButtonState();
-  }
-  catch(err){
+  } catch (err) {
     alert(err.message);
   }
 }
-function getTheNewPerson(){
+
+function getTheNewPerson() {
   const id = generateUniqueID();
   const firstName = getFirstNameInput();
   const lastName = getLastNameInput();
   const image = getImageProfileInput();
   let likes = 0;
-  let obj = { id: id, firstName: firstName, lastName: lastName, image: image, likes: likes};
+  let obj = {
+    id: id,
+    firstName: firstName,
+    lastName: lastName,
+    image: image,
+    likes: likes
+  };
   let newPerson = new Person(obj);
   return newPerson;
 }
@@ -501,11 +514,13 @@ function clearButtonAction() {
   rerenderContacts();
   clearFavsListHTML();
 }
+
 function clearContactsLikes() {
   contactsList.forEach((item) => {
     item.likes = 0;
   })
 }
+
 function clearFavsListHTML() {
   document.getElementById('favs-list').innerHTML = '';
 }
@@ -535,7 +550,7 @@ function makeAllConections() {
   window.onbeforeunload = saveDataToLocalStorage;
 }
 
-function initAll(){
+function initAll() {
   document.getElementById('add-button').disabled = true;
   document.getElementById('delete-all-button').disabled = true;
 }
