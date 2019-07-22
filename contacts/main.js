@@ -1,4 +1,3 @@
-
 // the main list of contacts- person objects
 let contactsList;
 
@@ -154,7 +153,7 @@ function sortArrayByLikes(arrayOfContacts) {
 
 function createMapOfFavs(arrayOfContacts) {
   let myMap = {};
-  arrayOfContacts.forEach( (person) => {
+  arrayOfContacts.forEach((person) => {
     let maximNoOfLikes = person.likes;
     if (typeof myMap[maximNoOfLikes] === 'undefined') {
       // we create a new one
@@ -187,7 +186,7 @@ function rerenderFavsListHTML(mapOfContacts) {
   numbers.reverse();
   const NUMBER_OF_FAVS = 3;
 
-  numbers.forEach( (number, i) => {
+  numbers.forEach((number, i) => {
     if (i >= NUMBER_OF_FAVS) return;
 
     let p = document.createElement('p');
@@ -223,7 +222,7 @@ function rerenderFavsListHTML(mapOfContacts) {
 
       ol.appendChild(newLi);
     })
-  }) 
+  })
 
 
 }
@@ -248,11 +247,11 @@ function deleteSelectedContacts() {
 function getSelectedContactsIDs() {
   // returns an array of ids
   let returnArrayOfIDs = [];
-  contactsList.forEach( (person) => {
+  contactsList.forEach((person) => {
     let checkboxId = "checkbox-" + person.id;
     let checkbox = document.getElementById(checkboxId);
     if (checkbox.checked)
-    returnArrayOfIDs.push(person.id);
+      returnArrayOfIDs.push(person.id);
   })
   return returnArrayOfIDs;
 }
@@ -285,8 +284,8 @@ function generateUniqueID() {
     finalArray.push(char);
   }
   let arr = '';
-  finalArray.forEach( (item) => {
-    arr+=item;
+  finalArray.forEach((item) => {
+    arr += item;
   })
   return arr;
 }
@@ -307,8 +306,9 @@ function rerenderContacts() {
   document.getElementById('contacts-list').innerHTML = '';
   populateContactsListHTML();
 }
+
 function populateContactsListHTML() {
-  contactsList.forEach( (person) => {
+  contactsList.forEach((person) => {
     addToHTMLNewPerson(person);
   })
 }
@@ -456,6 +456,7 @@ function decrementLikes(personId) {
 }
 
 ///////////////////////validation functions///////////////////////
+
 function validateName(name) {
   var regex = /^[A-Za-z0-9 ]+$/;
   var isValid = regex.test(name);
@@ -469,7 +470,9 @@ function validateImageUrl(imageUrl) {
   if (!isValid)
     throw new EvalError('Your image is not an url');
 }
+
 /////////////////////////////////////////////////////////////////
+
 function getInput(id) {
   return document.getElementById(id).value;
 }
