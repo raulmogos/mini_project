@@ -100,48 +100,45 @@ function getContactsFromLocalStorage() {
 }
 
 function getContactsAccordingly() {
-  let array = getContactsFromLocalStorage();
+  const array = getContactsFromLocalStorage();
   // if we have nothing in the local storage we get the initial list
   if (array === null || array.length === 0)
-    array = getInitialListOfContacts()
+    return getInitialListOfContacts();
   return array;
 }
 
 /////////////////////////////////////////////////////////////////////////
 
-function getNumberOfNonZeroLikes() {
-  let nonZeros = 0;
-  contactsList.forEach((person) => {
-    if (person.likes !== 0)
-      nonZeros += 1;
-  })
-  return nonZeros;
+function areContactsWithLikes() {
+  for (let i = 0; i < contactsList.length; i++)
+    if (contactsList[i].likes !== 0)
+      return true;
+  return false;
 }
 
 function refreshFavsList() {
   // calculate the new list 
-  let favsMap = calculateFavsList();
+  const favsMap = calculateFavsList();
   // clear
   clearFavsListHTML();
   // rerender the new list if there is at least one nonzero elem
-  if (getNumberOfNonZeroLikes() !== 0)
+  if (areContactsWithLikes())
     rerenderFavsListHTML(favsMap);
 }
 
 function calculateFavsList() {
   // returns a map
-  let maap = {};
-  // we deep copy it
-  let arr = [...contactsList];
+  // we deep copy contactsList
+  let cloneContactsList = [...contactsList];
   // we sort it by likes
-  sortArrayByLikes(arr);
+  sortArrayByLikes(cloneContactsList);
   // we create the map of arrays
-  maap = createMapOfFavs(arr);
+  const favsMap = createMapOfFavs(cloneContactsList);
   // sort each of them
-  Object.keys(maap).forEach((key) => {
-    sortArrayAlphabetically(maap[key]);
+  Object.keys(favsMap).forEach((key) => {
+    sortArrayAlphabetically(favsMap[key]);
   })
-  return maap;
+  return favsMap;
 }
 
 function sortArrayByLikes(arrayOfContacts) {
@@ -158,18 +155,16 @@ function createMapOfFavs(arrayOfContacts) {
     if (typeof myMap[maximNoOfLikes] === 'undefined') {
       // we create a new one
       myMap[maximNoOfLikes] = [];
-      myMap[maximNoOfLikes].push(person);
-    } else {
-      myMap[maximNoOfLikes].push(person);
     }
+    myMap[maximNoOfLikes].push(person);
   })
   return myMap;
 }
 
 function sortArrayAlphabetically(arrayOfContacts) {
   arrayOfContacts.sort((p1, p2) => {
-    let p1FullName = p1.firstName + ' ' + p1.lastName;
-    let p2FullName = p2.firstName + ' ' + p2.lastName;
+    const p1FullName = p1.firstName + ' ' + p1.lastName;
+    const p2FullName = p2.firstName + ' ' + p2.lastName;
     if (p1FullName > p2FullName) return 1;
     if (p1FullName < p2FullName) return -1;
     return 0;
@@ -411,7 +406,7 @@ function changeDeleteAllButtonValueAndState() {
   let button = document.getElementById('delete-all-button');
   let numberOfCheckedContacts = 0;
   numberOfCheckedContacts = getSelectedContactsIDs().length;
-  if (numberOfCheckedContacts != 0) {
+  if (numberOfCheckedContacts !== 0) {
     button.innerHTML = 'Delete All ' + numberOfCheckedContacts.toString();
     button.disabled = false;
   } else {
@@ -496,9 +491,7 @@ function addedSuccessfullyPerson(newPerson) {
 }
 
 function clearFormInputs() {
-  document.getElementById('first-name').value = '';
-  document.getElementById('last-name').value = '';
-  document.getElementById('profile-image').value = '';
+  document.getElementById('add-form').reset();
 }
 
 function getTheNewPerson() {
@@ -539,7 +532,7 @@ function changeAddButtonState() {
   let first_name = document.getElementById('first-name').value;
   let last_name = document.getElementById('last-name').value;
   let image = document.getElementById('profile-image').value;
-  if (first_name != '' && last_name != '' && image != '')
+  if (first_name !== '' && last_name !== '' && image !== '')
     document.getElementById('add-button').disabled = false;
   else
     document.getElementById('add-button').disabled = true;
