@@ -1,5 +1,6 @@
-let contactsList;
 
+// the main list of contacts- person objects
+let contactsList;
 
 // person entity
 class Person {
@@ -14,11 +15,10 @@ class Person {
     return `${this.id} ${this.firstName} ${this.lastName} ${this.likes}`;
   }
 }
-
-function getListOfContacts() {
+/////////////////////////////////////////////////////////////////////////
+function getInitialListOfContacts() {
   let array = [];
   var id;
-  var person;
   var obj;
 
   id = generateUniqueID();
@@ -29,8 +29,7 @@ function getListOfContacts() {
     image: 'images/profile-pics/pic1.jfif',
     likes: 0
   };
-  person = new Person(obj);
-  array.push(person);
+  array.push(obj);
   id = generateUniqueID();
   obj = {
     id: id,
@@ -39,8 +38,7 @@ function getListOfContacts() {
     image: 'images/profile-pics/pic2.jfif',
     likes: 0
   };
-  person = new Person(obj);
-  array.push(person);
+  array.push(obj);
   id = generateUniqueID();
   obj = {
     id: id,
@@ -49,8 +47,7 @@ function getListOfContacts() {
     image: 'images/profile-pics/pic3.jfif',
     likes: 0
   };
-  person = new Person(obj);
-  array.push(person);
+  array.push(obj);
   id = generateUniqueID();
   obj = {
     id: id,
@@ -59,8 +56,7 @@ function getListOfContacts() {
     image: 'images/profile-pics/pic4.jfif',
     likes: 0
   };
-  person = new Person(obj);
-  array.push(person);
+  array.push(obj);
   id = generateUniqueID();
   obj = {
     id: id,
@@ -69,8 +65,7 @@ function getListOfContacts() {
     image: 'images/profile-pics/pic5.jfif',
     likes: 0
   };
-  person = new Person(obj);
-  array.push(person);
+  array.push(obj);
   id = generateUniqueID();
   obj = {
     id: id,
@@ -79,8 +74,7 @@ function getListOfContacts() {
     image: 'images/profile-pics/pic6.jfif',
     likes: 0
   };
-  person = new Person(obj);
-  array.push(person);
+  array.push(obj);
   id = generateUniqueID();
   obj = {
     id: id,
@@ -89,10 +83,13 @@ function getListOfContacts() {
     image: 'images/profile-pics/pic7.jfif',
     likes: 0
   };
-  person = new Person(obj);
-  array.push(person);
-
-  return array;
+  array.push(obj);
+  let retunrArray = [];
+  array.forEach((item) => {
+    let person = new Person(item);
+    retunrArray.push(person);
+  })
+  return retunrArray;
 }
 
 function saveDataToLocalStorage() {
@@ -103,42 +100,49 @@ function getContactsFromLocalStorage() {
   return JSON.parse(localStorage.getItem('contacts'));
 }
 
-function populateContactsListHTML() {
-  for (let i = 0; i < contactsList.length; i++) {
-    addToHTMLNewPerson(contactsList[i]);
-  }
+function getContactsAccordingly() {
+  let array = getContactsFromLocalStorage();
+  // if we have nothing in the local storage we get the initial list
+  if (array === null || array.length === 0)
+    array = getInitialListOfContacts()
+  return array;
 }
 
-function consoleLogContactsList() {
-  console.log('-----------------------------------------------------');
-  for (let i = 0; i < contactsList.length; i++) {
-    console.log(contactsList[i].getFullNameAndLikes());
-  }
+/////////////////////////////////////////////////////////////////////////
+
+function getNumberOfNonZeroLikes() {
+  let nonZeros = 0;
+  contactsList.forEach((person) => {
+    if (person.likes !== 0)
+      nonZeros += 1;
+  })
+  return nonZeros;
 }
 
 function refreshFavsList() {
-  // clear list
-  document.getElementById('favs-list').innerHTML = '';
   // calculate the new list 
   let favsMap = calculateFavsList();
-  // rerender the new list
-  rerenderFavsListHTML(favsMap);
+  // clear
+  clearFavsListHTML();
+  // rerender the new list if there is at least one nonzero elem
+  if (getNumberOfNonZeroLikes() !== 0)
+    rerenderFavsListHTML(favsMap);
 }
 
 function calculateFavsList() {
   // returns a map
-  let mp = {};
+  let maap = {};
   // we deep copy it
   let arr = [...contactsList];
   // we sort it by likes
   sortArrayByLikes(arr);
   // we create the map of arrays
-  mp = createMapOfFavs(arr);
+  maap = createMapOfFavs(arr);
   // sort each of them
-  Object.keys(mp).forEach((key) => {
-    sortArrayAlphabetically(mp[key]);
+  Object.keys(maap).forEach((key) => {
+    sortArrayAlphabetically(maap[key]);
   })
-  return mp;
+  return maap;
 }
 
 function sortArrayByLikes(arrayOfContacts) {
@@ -150,16 +154,16 @@ function sortArrayByLikes(arrayOfContacts) {
 
 function createMapOfFavs(arrayOfContacts) {
   let myMap = {};
-  for (let i = 0; i < arrayOfContacts.length; i++) {
-    let maxim = arrayOfContacts[i].likes;
-    if (typeof myMap[maxim] === 'undefined') {
+  arrayOfContacts.forEach( (person) => {
+    let maximNoOfLikes = person.likes;
+    if (typeof myMap[maximNoOfLikes] === 'undefined') {
       // we create a new one
-      myMap[maxim] = [];
-      myMap[maxim].push(arrayOfContacts[i]);
+      myMap[maximNoOfLikes] = [];
+      myMap[maximNoOfLikes].push(person);
     } else {
-      myMap[maxim].push(arrayOfContacts[i]);
+      myMap[maximNoOfLikes].push(person);
     }
-  }
+  })
   return myMap;
 }
 
@@ -173,24 +177,25 @@ function sortArrayAlphabetically(arrayOfContacts) {
   })
 }
 
+function clearFavsListHTML() {
+  document.getElementById('favs-list').innerHTML = '';
+}
+
 function rerenderFavsListHTML(mapOfContacts) {
-
   let ol = document.getElementById('favs-list');
-  ol.innerHTML = '';
-
   let numbers = Object.keys(mapOfContacts).sort();
   numbers.reverse();
+  const NUMBER_OF_FAVS = 3;
 
-  for (let i = 0; i < numbers.length; i++) {
-    if (i === 3) break;
+  numbers.forEach( (number, i) => {
+    if (i >= NUMBER_OF_FAVS) return;
 
     let p = document.createElement('p');
-    p.innerHTML = numbers[i];
+    p.innerHTML = number;
     p.className = 'align-center';
     ol.appendChild(p);
 
-    mapOfContacts[numbers[i]].forEach((item) => {
-
+    mapOfContacts[number].forEach((item) => {
       let newLi = document.createElement('li');
       newLi.classList.add('person-field');
 
@@ -218,7 +223,9 @@ function rerenderFavsListHTML(mapOfContacts) {
 
       ol.appendChild(newLi);
     })
-  }
+  }) 
+
+
 }
 //-----------------------------actions----------------------------------
 function deleteAllButtonAction() {
@@ -235,82 +242,32 @@ function deleteAllButtonAction() {
 //----------------------------------------------------------------------
 
 function deleteSelectedContacts() {
-  let personsToDelete = getSelectedContactsIDs();
-  for (let i = 0; i < personsToDelete.length; i++) {
-    deletePerson(personsToDelete[i]);
-  }
+  getSelectedContactsIDs().forEach((person) => deletePerson(person));
 }
 
 function getSelectedContactsIDs() {
   // returns an array of ids
   let returnArrayOfIDs = [];
-  let arr = document.getElementById('contacts-list').
-  getElementsByClassName('person-field');
-  for (let i = 0; i < arr.length; i++) {
-    let input = arr[i].getElementsByTagName('input')[0];
-    if (input.type === 'checkbox' && input.checked) {
-      // compute the id -> last 6 characters
-      let personId = input.id.slice(input.id.length - 6);
-      returnArrayOfIDs.push(personId);
-    }
-  }
+  contactsList.forEach( (person) => {
+    let checkboxId = "checkbox-" + person.id;
+    let checkbox = document.getElementById(checkboxId);
+    if (checkbox.checked)
+    returnArrayOfIDs.push(person.id);
+  })
   return returnArrayOfIDs;
 }
 
 function clearSelectedBoxes() {
-  let ch = getSelectedContactsIDs();
-  ch.forEach((id) => {
+  getSelectedContactsIDs().forEach((id) => {
     let buttonId = 'checkbox-' + id;
     document.getElementById(buttonId).checked = false;
   })
 }
 
-///////////////////////validation functions///////////////////////
-function validateFirstNameInput(firstName) {
-  var regex = /^[A-Za-z0-9 ]+$/;
-  var isValid = regex.test(firstName);
-  if (!isValid)
-    throw new EvalError('Your first name contains special characters');
-}
-
-function validaetLastNameInput(lastName) {
-  let regex = /^[A-Za-z0-9 ]+$/;
-  let isValid = regex.test(lastName);
-  if (!isValid)
-    throw new EvalError('Your last name contains special characters');
-}
-
-function validateImageUrl(imageUrl) {
-  let pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
-  let isValid = pattern.test(imageUrl);
-  if (!isValid)
-    throw new EvalError('Your image is not an url');
-}
-/////////////////////////////////////////////////////////////////
-function getFirstNameInput() {
-  let firstName = document.getElementById('first-name').value;
-  document.getElementById('first-name').value = '';
-  validateFirstNameInput(firstName);
-  return firstName;
-}
-
-function getLastNameInput() {
-  let lastName = document.getElementById('last-name').value;
-  document.getElementById('last-name').value = '';
-  validaetLastNameInput(lastName);
-  return lastName;
-}
-
-function getImageProfileInput() {
-  let image = document.getElementById('profile-image').value;
-  document.getElementById('profile-image').value = '';
-  validateImageUrl(image);
-  return image;
-}
 //////////////////////////////helper/////////////////////////////
+
 function generateUniqueID() {
   let finalArray = [];
-
   let getRandChar = () => {
     let numbers = [];
     for (let i = 97; i < 123; i++) {
@@ -319,28 +276,41 @@ function generateUniqueID() {
     let rand = Math.floor(Math.random() * 100) % 26;
     return String.fromCharCode(numbers[rand]);
   }
-
   // suffle may be implemented -> TODO
-
-  for (let i = 0; i < 3; i++) {
+  const MAX_NUMBER = 3;
+  for (let i = 0; i < MAX_NUMBER; i++) {
     let number = (Math.floor(Math.random() * 10)).toString(10);
     let char = getRandChar();
     finalArray.push(number);
     finalArray.push(char);
   }
-
   let arr = '';
-  for (let i = 0; i < finalArray.length; i++) {
-    arr += finalArray[i];
-  }
-
+  finalArray.forEach( (item) => {
+    arr+=item;
+  })
   return arr;
 }
+
+function getIdOfPerson(elementId) {
+  // input: id of an element wich has the input
+  // of the person at the end
+  // const MAX_LENGTH_ID = 2*MAX_NUMBER;
+  // MAX_NUMBER - defined in generateUniqueID()
+  const MAX_LENGTH_ID = 6;
+  return elementId.slice(elementId.length - MAX_LENGTH_ID);
+}
+
 ////////////////////////////////////////////////////////////////
+
 function rerenderContacts() {
   // contactsList - array of person objects
   document.getElementById('contacts-list').innerHTML = '';
   populateContactsListHTML();
+}
+function populateContactsListHTML() {
+  contactsList.forEach( (person) => {
+    addToHTMLNewPerson(person);
+  })
 }
 // function that adds a new single person to contacts
 function addToHTMLNewPerson(newPerson) {
@@ -354,6 +324,8 @@ function addToHTMLNewPerson(newPerson) {
   plusButton.id = 'plus-button-' + newPerson.id;
   plusButton.innerHTML = '+';
   plusButton.custom = 'plus-button-custom';
+  if (newPerson.likes === 99)
+    plusButton.disabled = true;
   newLi.appendChild(plusButton);
 
   let fav_count = document.createElement('div');
@@ -366,6 +338,8 @@ function addToHTMLNewPerson(newPerson) {
   minusButton.id = 'minus-button-' + newPerson.id;
   minusButton.innerHTML = '-';
   minusButton.custom = 'minus-button-custom';
+  if (newPerson.likes === 0)
+    minusButton.disabled = true;
   newLi.appendChild(minusButton);
 
   let image = document.createElement('img');
@@ -403,10 +377,10 @@ function addToHTMLNewPerson(newPerson) {
 }
 
 /////////////////////handle for the contacts list///////////////////
+
 function eventsHandlerContacts(event) {
   let target_id = event.target.id;
-  let personId = target_id.slice(target_id.length - 6);
-
+  let personId = getIdOfPerson(target_id);
   switch (event.target.custom) {
     case 'minus-button-custom':
       decrementLikes(personId);
@@ -430,6 +404,7 @@ function eventsHandlerContacts(event) {
       break;
   }
 }
+
 ///////////////////////////////////////////////////////////////////
 
 function changeDeleteAllButtonValueAndState() {
@@ -445,11 +420,12 @@ function changeDeleteAllButtonValueAndState() {
   }
 }
 
-
 function resetDeleteAllButtonValueAndState() {
   document.getElementById('delete-all-button').innerHTML = 'Delete All';
   document.getElementById('delete-all-button').disabled = true;
 }
+
+//////////////////////////////////////////////////////////////////
 
 function deletePerson(personId) {
   for (let i = 0; i < contactsList.length; i++)
@@ -479,36 +455,69 @@ function decrementLikes(personId) {
     }
 }
 
+///////////////////////validation functions///////////////////////
+function validateName(name) {
+  var regex = /^[A-Za-z0-9 ]+$/;
+  var isValid = regex.test(name);
+  if (!isValid)
+    throw new EvalError('Your name contains special characters');
+}
+
+function validateImageUrl(imageUrl) {
+  let pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+  let isValid = pattern.test(imageUrl);
+  if (!isValid)
+    throw new EvalError('Your image is not an url');
+}
+/////////////////////////////////////////////////////////////////
+function getInput(id) {
+  return document.getElementById(id).value;
+}
+
 function addNewPerson() {
   try {
     let newPerson = getTheNewPerson();
-    contactsList.push(newPerson);
+    contactsList.unshift(newPerson);
     rerenderContacts(contactsList);
+    clearFormInputs();
     changeAddButtonState();
+    addedSuccessfullyPerson(newPerson);
   } catch (err) {
     alert(err.message);
+    clearFormInputs();
   }
+}
+
+function addedSuccessfullyPerson(newPerson) {
+  alert(newPerson.firstName + ' ' + newPerson.lastName + ' was added successfully');
+}
+
+function clearFormInputs() {
+  document.getElementById('first-name').value = '';
+  document.getElementById('last-name').value = '';
+  document.getElementById('profile-image').value = '';
 }
 
 function getTheNewPerson() {
   const id = generateUniqueID();
-  const firstName = getFirstNameInput();
-  const lastName = getLastNameInput();
-  const image = getImageProfileInput();
+  const firstName = getInput('first-name');
+  validateName(firstName);
+  const lastName = getInput('last-name');
+  validateName(lastName);
+  const image = getInput('profile-image');
+  validateImageUrl(image);
   let likes = 0;
   let obj = {
-    id: id,
-    firstName: firstName,
-    lastName: lastName,
-    image: image,
-    likes: likes
+    id,
+    firstName,
+    lastName,
+    image,
+    likes
   };
-  let newPerson = new Person(obj);
-  return newPerson;
+  return new Person(obj);
 }
 
-
-
+//////////////////////////////////////////////////////////////////////////
 function clearButtonAction() {
   clearContactsLikes();
   rerenderContacts();
@@ -521,10 +530,7 @@ function clearContactsLikes() {
   })
 }
 
-function clearFavsListHTML() {
-  document.getElementById('favs-list').innerHTML = '';
-}
-
+//////////////////////////////////////////////////////////////////////////
 
 function changeAddButtonState() {
   let first_name = document.getElementById('first-name').value;
@@ -536,19 +542,7 @@ function changeAddButtonState() {
     document.getElementById('add-button').disabled = true;
 }
 
-
-
-function makeAllConections() {
-  document.getElementById('add-button').onclick = addNewPerson;
-  document.getElementById('delete-all-button').onclick = deleteAllButtonAction;
-  document.getElementById('clear-button').onclick = clearButtonAction;
-
-  document.getElementById('first-name').oninput = changeAddButtonState;
-  document.getElementById('last-name').oninput = changeAddButtonState;
-  document.getElementById('profile-image').oninput = changeAddButtonState;
-
-  window.onbeforeunload = saveDataToLocalStorage;
-}
+//////////////////////////////////////////////////////////////////////////
 
 function initAll() {
   document.getElementById('add-button').disabled = true;
@@ -556,11 +550,11 @@ function initAll() {
 }
 
 function main() {
-  contactsList = getContactsFromLocalStorage();
+  contactsList = getContactsAccordingly();
   populateContactsListHTML();
   initAll();
-  makeAllConections();
   refreshFavsList();
+  window.onbeforeunload = saveDataToLocalStorage;
 }
 
 main();
