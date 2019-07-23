@@ -529,9 +529,9 @@ function clearContactsLikes() {
 //////////////////////////////////////////////////////////////////////////
 
 function changeAddButtonState() {
-  let first_name = document.getElementById('first-name').value;
-  let last_name = document.getElementById('last-name').value;
-  let image = document.getElementById('profile-image').value;
+  let first_name = getInput('first-name');
+  let last_name = getInput('last-name');
+  let image = getInput('profile-image');
   if (first_name !== '' && last_name !== '' && image !== '')
     document.getElementById('add-button').disabled = false;
   else
