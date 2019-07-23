@@ -10,9 +10,6 @@ class Person {
     this.image = person.image;
     this.likes = person.likes;
   }
-  getFullNameAndLikes() {
-    return `${this.id} ${this.firstName} ${this.lastName} ${this.likes}`;
-  }
 }
 /////////////////////////////////////////////////////////////////////////
 function getInitialListOfContacts() {
