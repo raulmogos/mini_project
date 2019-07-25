@@ -1,0 +1,51 @@
+{
+    "parser": "babel-eslint",
+    "extends": [
+      "airbnb/base"
+    ],
+    "globals": {
+      "document": true,
+      "window": true,
+      "navigator": true,
+      "WebSocket": true,
+      "localStorage": true,
+      "fetch": true,
+      "TouchEvent": true,
+      "Element": true,
+      "HTMLElement": true,
+      "MouseEvent": true
+    },
+    "rules": {
+      "func-names": ["error", "never"],
+      "no-case-declarations": "off",
+      "import/no-unresolved": "off",
+      "no-plusplus": "off", // we want to be able to use ++ and -- operators
+      "react/jsx-boolean-value": "off", // we want to explicitly set the value to true for bool props
+      "react/jsx-filename-extension": "off", // we don't want the jsx files to have .jsx extention
+      "react/jsx-one-expression-per-line": "off", // we don't want jsx files to be resticted to use one <expression> per line
+      "import/extensions": "off", // we don't want to add file extentions to imports
+      "import/no-extraneous-dependencies": "off", // doesn't play nice with the aliases we have in the project
+      "import/no-named-as-default":  "off",
+      "import/no-named-default": "off", // we use default named exports
+      "import/no-named-as-default-member": "off",
+      "import/prefer-default-export": "off",
+      "comma-dangle": "off", // may want to add in the future -- needs further discution with the team
+      "no-trailing-spaces": ["error", { "skipBlankLines": true }],
+      "max-len": ["warn", {
+        "code": 120,
+        "tabWidth": 2,
+        "ignoreComments": true,
+        "ignoreTrailingComments": true
+      }], // only have this as a warning for now
+      "no-underscore-dangle": ["off"], // we allow dangling '_' in front of method names
+      "one-var": ["off"], // we want to allow for separate const declarations to have stateless React containers on separate line
+      "quotes": ["error", "single"],
+      "camelcase": "warn", // only have this as a warning as we have properties coming from the server with camelcase
+      "arrow-parens": ["warn", "as-needed", { "requireForBlockBody": true }], // only have this as a warning for now
+      "no-prototype-builtins": "off", // no need to handle this
+      "linebreak-style": "off", // git already handles this
+      "no-multi-spaces": ["warn", { "ignoreEOLComments": true }],
+      "no-fallthrough": ["off"],
+      "padded-blocks": "off"
+    }
+  }

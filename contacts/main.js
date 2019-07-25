@@ -1,3 +1,7 @@
+import {
+  generateUniqueID
+} from './helper';
+
 // the main list of contacts- person objects
 let contactsList;
 
@@ -11,80 +15,79 @@ class Person {
     this.likes = person.likes;
   }
 }
-/////////////////////////////////////////////////////////////////////////
+// ///////////////////////////////////////////////////////////////////////
 function getInitialListOfContacts() {
-  let array = [];
-  var id;
-  var obj;
-
+  const auxiliarArray = [];
+  let id;
+  let obj;
   id = generateUniqueID();
   obj = {
-    id: id,
+    id,
     firstName: 'Alin',
-    lastName: 'Ionescu',
+    lastName: 'Bla Bla Bla',
     image: 'images/profile-pics/pic1.jfif',
     likes: 0
   };
-  array.push(obj);
+  auxiliarArray.push(obj);
   id = generateUniqueID();
   obj = {
-    id: id,
+    id,
     firstName: 'Leona',
     lastName: 'Sherman',
     image: 'images/profile-pics/pic2.jfif',
     likes: 0
   };
-  array.push(obj);
+  auxiliarArray.push(obj);
   id = generateUniqueID();
   obj = {
-    id: id,
+    id,
     firstName: 'Annette',
     lastName: 'Carlson',
     image: 'images/profile-pics/pic3.jfif',
     likes: 0
   };
-  array.push(obj);
+  auxiliarArray.push(obj);
   id = generateUniqueID();
   obj = {
-    id: id,
+    id,
     firstName: 'Ervin',
     lastName: 'Watkins',
     image: 'images/profile-pics/pic4.jfif',
     likes: 0
   };
-  array.push(obj);
+  auxiliarArray.push(obj);
   id = generateUniqueID();
   obj = {
-    id: id,
+    id,
     firstName: 'Philip',
     lastName: 'Pope',
     image: 'images/profile-pics/pic5.jfif',
     likes: 0
   };
-  array.push(obj);
+  auxiliarArray.push(obj);
   id = generateUniqueID();
   obj = {
-    id: id,
+    id,
     firstName: 'Viorel',
     lastName: 'Popescu',
     image: 'images/profile-pics/pic6.jfif',
     likes: 0
   };
-  array.push(obj);
+  auxiliarArray.push(obj);
   id = generateUniqueID();
   obj = {
-    id: id,
+    id,
     firstName: 'Elon',
     lastName: 'Musk',
     image: 'images/profile-pics/pic7.jfif',
     likes: 0
   };
-  array.push(obj);
-  let retunrArray = [];
-  array.forEach((item) => {
-    let person = new Person(item);
+  auxiliarArray.push(obj);
+  const retunrArray = [];
+  auxiliarArray.forEach((item) => {
+    const person = new Person(item);
     retunrArray.push(person);
-  })
+  });
   return retunrArray;
 }
 
@@ -99,34 +102,55 @@ function getContactsFromLocalStorage() {
 function getContactsAccordingly() {
   const array = getContactsFromLocalStorage();
   // if we have nothing in the local storage we get the initial list
-  if (array === null || array.length === 0)
+  if (array === null || array.length === 0) {
     return getInitialListOfContacts();
+  }
   return array;
 }
 
-/////////////////////////////////////////////////////////////////////////
+// ///////////////////////////////////////////////////////////////////////
 
 function areContactsWithLikes() {
-  for (let i = 0; i < contactsList.length; i++)
-    if (contactsList[i].likes !== 0)
+  for (let i = 0; i < contactsList.length; i++) {
+    if (contactsList[i].likes !== 0) {
       return true;
+    }
+  }
   return false;
 }
 
-function refreshFavsList() {
-  // calculate the new list 
-  const favsMap = calculateFavsList();
-  // clear
-  clearFavsListHTML();
-  // rerender the new list if there is at least one nonzero elem
-  if (areContactsWithLikes())
-    rerenderFavsListHTML(favsMap);
+function sortArrayByLikes(arrayOfContacts) {
+  // arrayOfContacts - array of objects person
+  arrayOfContacts.sort((p1, p2) => p2.likes - p1.likes);
+}
+
+function createMapOfFavs(arrayOfContacts) {
+  const myMap = {};
+  arrayOfContacts.forEach((person) => {
+    const maximNoOfLikes = person.likes;
+    if (typeof myMap[maximNoOfLikes] === 'undefined') {
+      // we create a new one
+      myMap[maximNoOfLikes] = [];
+    }
+    myMap[maximNoOfLikes].push(person);
+  });
+  return myMap;
+}
+
+function sortArrayAlphabetically(arrayOfContacts) {
+  arrayOfContacts.sort((p1, p2) => {
+    const p1FullName = `${p1.firstName} ${p1.lastName}`;
+    const p2FullName = `${p2.firstName} ${p2.lastName}`;
+    if (p1FullName > p2FullName) return 1;
+    if (p1FullName < p2FullName) return -1;
+    return 0;
+  });
 }
 
 function calculateFavsList() {
   // returns a map
   // we deep copy contactsList
-  let cloneContactsList = [...contactsList];
+  const cloneContactsList = [...contactsList];
   // we sort it by likes
   sortArrayByLikes(cloneContactsList);
   // we create the map of arrays
@@ -134,38 +158,8 @@ function calculateFavsList() {
   // sort each of them
   Object.keys(favsMap).forEach((key) => {
     sortArrayAlphabetically(favsMap[key]);
-  })
+  });
   return favsMap;
-}
-
-function sortArrayByLikes(arrayOfContacts) {
-  // arrayOfContacts - array of objects person
-  arrayOfContacts.sort((p1, p2) => {
-    return p2.likes - p1.likes;
-  })
-}
-
-function createMapOfFavs(arrayOfContacts) {
-  let myMap = {};
-  arrayOfContacts.forEach((person) => {
-    let maximNoOfLikes = person.likes;
-    if (typeof myMap[maximNoOfLikes] === 'undefined') {
-      // we create a new one
-      myMap[maximNoOfLikes] = [];
-    }
-    myMap[maximNoOfLikes].push(person);
-  })
-  return myMap;
-}
-
-function sortArrayAlphabetically(arrayOfContacts) {
-  arrayOfContacts.sort((p1, p2) => {
-    const p1FullName = p1.firstName + ' ' + p1.lastName;
-    const p2FullName = p2.firstName + ' ' + p2.lastName;
-    if (p1FullName > p2FullName) return 1;
-    if (p1FullName < p2FullName) return -1;
-    return 0;
-  })
 }
 
 function clearFavsListHTML() {
@@ -173,41 +167,41 @@ function clearFavsListHTML() {
 }
 
 function rerenderFavsListHTML(mapOfContacts) {
-  let ol = document.getElementById('favs-list');
-  let numbers = Object.keys(mapOfContacts).sort();
+  const ol = document.getElementById('favs-list');
+  const numbers = Object.keys(mapOfContacts).sort();
   numbers.reverse();
   const NUMBER_OF_FAVS = 3;
 
   numbers.forEach((number, i) => {
     if (i >= NUMBER_OF_FAVS) return;
 
-    let p = document.createElement('p');
+    const p = document.createElement('p');
     p.innerHTML = number;
     p.className = 'align-center';
     ol.appendChild(p);
 
     mapOfContacts[number].forEach((item) => {
-      let newLi = document.createElement('li');
+      const newLi = document.createElement('li');
       newLi.classList.add('person-field');
 
-      let fav_count = document.createElement('div');
+      const fav_count = document.createElement('div');
       fav_count.className = 'favs-count'
       fav_count.innerHTML = item.likes;
       newLi.appendChild(fav_count);
 
-      let image = document.createElement('img');
+      const image = document.createElement('img');
       image.src = item.image;
       image.alt = 'pic';
       image.className = 'avatar';
       newLi.appendChild(image);
 
-      let full_name = document.createElement('span');
+      const full_name = document.createElement('span');
       full_name.className = 'full-name';
-      let first_name = document.createElement('span');
+      const first_name = document.createElement('span');
       first_name.innerHTML = item.firstName;
       first_name.style.marginRight = '10px';
       full_name.appendChild(first_name);
-      let last_name = document.createElement('span');
+      const last_name = document.createElement('span');
       last_name.innerHTML = item.lastName;
       full_name.appendChild(last_name);
       newLi.appendChild(full_name);
@@ -215,10 +209,21 @@ function rerenderFavsListHTML(mapOfContacts) {
       ol.appendChild(newLi);
     })
   })
-
-
 }
+
+function refreshFavsList() {
+  // calculate the new list
+  const favsMap = calculateFavsList();
+  // clear
+  clearFavsListHTML();
+  // rerender the new list if there is at least one nonzero elem
+  if (areContactsWithLikes()) {
+    rerenderFavsListHTML(favsMap);
+  }
+}
+
 //-----------------------------actions----------------------------------
+
 function deleteAllButtonAction() {
   if (confirm('ARE YOU SURE YOU WANT TO DO THIS ?')) {
     deleteSelectedContacts();
@@ -230,6 +235,7 @@ function deleteAllButtonAction() {
     resetDeleteAllButtonValueAndState();
   }
 }
+
 //----------------------------------------------------------------------
 
 function deleteSelectedContacts() {
@@ -238,49 +244,25 @@ function deleteSelectedContacts() {
 
 function getSelectedContactsIDs() {
   // returns an array of ids
-  let returnArrayOfIDs = [];
+  const returnArrayOfIDs = [];
   contactsList.forEach((person) => {
-    let checkboxId = "checkbox-" + person.id;
-    let checkbox = document.getElementById(checkboxId);
-    if (checkbox.checked)
+    const checkboxId = "checkbox-" + person.id;
+    const checkbox = document.getElementById(checkboxId);
+    if (checkbox.checked) {
       returnArrayOfIDs.push(person.id);
-  })
+    }
+  });
   return returnArrayOfIDs;
 }
 
 function clearSelectedBoxes() {
   getSelectedContactsIDs().forEach((id) => {
-    let buttonId = 'checkbox-' + id;
+    const buttonId = 'checkbox-' + id;
     document.getElementById(buttonId).checked = false;
   })
 }
 
 //////////////////////////////helper/////////////////////////////
-
-function generateUniqueID() {
-  let finalArray = [];
-  let getRandChar = () => {
-    let numbers = [];
-    for (let i = 97; i < 123; i++) {
-      numbers.push(i);
-    }
-    let rand = Math.floor(Math.random() * 100) % 26;
-    return String.fromCharCode(numbers[rand]);
-  }
-  // suffle may be implemented -> TODO
-  const MAX_NUMBER = 3;
-  for (let i = 0; i < MAX_NUMBER; i++) {
-    let number = (Math.floor(Math.random() * 10)).toString(10);
-    let char = getRandChar();
-    finalArray.push(number);
-    finalArray.push(char);
-  }
-  let arr = '';
-  finalArray.forEach((item) => {
-    arr += item;
-  })
-  return arr;
-}
 
 function getIdOfPerson(elementId) {
   // input: id of an element wich has the input
@@ -523,26 +505,26 @@ function clearContactsLikes() {
   })
 }
 
-//////////////////////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////////////////////
 
 function changeAddButtonState() {
   let first_name = getInput('first-name');
   let last_name = getInput('last-name');
   let image = getInput('profile-image');
-  if (first_name !== '' && last_name !== '' && image !== '')
+  if (first_name !== '' && last_name !== '' && image !== '') {
     document.getElementById('add-button').disabled = false;
-  else
+  } else
     document.getElementById('add-button').disabled = true;
 }
 
-//////////////////////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////////////////////
 
 function initAll() {
   document.getElementById('add-button').disabled = true;
   document.getElementById('delete-all-button').disabled = true;
 }
 
-function main() {
+const main = () => {
   contactsList = getContactsAccordingly();
   populateContactsListHTML();
   initAll();
@@ -551,3 +533,11 @@ function main() {
 }
 
 main();
+
+window.ui = {
+  eventsHandlerContacts: eventsHandlerContacts,
+  deleteAllButtonAction: deleteAllButtonAction,
+  clearButtonAction: clearButtonAction,
+  changeAddButtonState: changeAddButtonState,
+  addNewPerson: addNewPerson
+};
