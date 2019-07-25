@@ -11,7 +11,9 @@ class Person {
     this.likes = person.likes;
   }
 }
-/////////////////////////////////////////////////////////////////////////
+
+// ///////////////////////////////////////////////////////////////////////
+
 function getInitialListOfContacts() {
   let array = [];
   var id;
@@ -21,7 +23,7 @@ function getInitialListOfContacts() {
   obj = {
     id: id,
     firstName: 'Alin',
-    lastName: 'Ionescu',
+    lastName: 'Popescu',
     image: 'images/profile-pics/pic1.jfif',
     likes: 0
   };
@@ -104,7 +106,7 @@ function getContactsAccordingly() {
   return array;
 }
 
-/////////////////////////////////////////////////////////////////////////
+// ///////////////////////////////////////////////////////////////////////
 
 function areContactsWithLikes() {
   for (let i = 0; i < contactsList.length; i++)
@@ -218,7 +220,9 @@ function rerenderFavsListHTML(mapOfContacts) {
 
 
 }
+
 //-----------------------------actions----------------------------------
+
 function deleteAllButtonAction() {
   if (confirm('ARE YOU SURE YOU WANT TO DO THIS ?')) {
     deleteSelectedContacts();
@@ -230,6 +234,7 @@ function deleteAllButtonAction() {
     resetDeleteAllButtonValueAndState();
   }
 }
+
 //----------------------------------------------------------------------
 
 function deleteSelectedContacts() {
@@ -407,47 +412,50 @@ function changeDeleteAllButtonValueAndState() {
     button.innerHTML = 'Delete All ' + numberOfCheckedContacts.toString();
     button.disabled = false;
   } else {
-    button.innerHTML = 'Delete All';
-    button.disabled = true;
+    resetDeleteAllButtonValueAndState(button);
   }
 }
 
-function resetDeleteAllButtonValueAndState() {
-  document.getElementById('delete-all-button').innerHTML = 'Delete All';
-  document.getElementById('delete-all-button').disabled = true;
+function resetDeleteAllButtonValueAndState(button) {
+  if (!button){
+    button = document.getElementById('delete-all-button');
+  }
+  button.innerHTML = 'Delete All';
+  button.disabled = true;
 }
 
-//////////////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////////////
 
 function deletePerson(personId) {
-  for (let i = 0; i < contactsList.length; i++)
-    if (contactsList[i].id === personId) {
-      contactsList.splice(i, 1);
-      break;
-    }
+  const index = contactsList.map(person => {
+    return person.id;
+  }).indexOf(personId);
+  contactsList.splice(index, 1);
 }
 
 function incrementLikes(personId) {
-  for (let i = 0; i < contactsList.length; i++)
+  for (let i = 0; i < contactsList.length; i++) {
     if (contactsList[i].id === personId) {
       if (contactsList[i].likes < 99) {
         contactsList[i].likes += 1;
         break;
       }
     }
+  }
 }
 
 function decrementLikes(personId) {
-  for (let i = 0; i < contactsList.length; i++)
+  for (let i = 0; i < contactsList.length; i++) {
     if (contactsList[i].id === personId) {
       if (contactsList[i].likes > 0) {
         contactsList[i].likes -= 1;
         break;
       }
     }
+  }
 }
 
-///////////////////////validation functions///////////////////////
+// /////////////////////validation functions///////////////////////
 
 function validateName(name) {
   var regex = /^[A-Za-z0-9 ]+$/;
