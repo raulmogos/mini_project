@@ -182,6 +182,10 @@ body {
     padding: 20px 0px 10px 0px;
 }
 
+.margin-right {
+    margin-right: 10px;
+}
+
 @media only screen and (max-width: 950px) {
     .contacts {
         width: 100%;

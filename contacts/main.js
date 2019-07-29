@@ -148,7 +148,7 @@ function createMapOfFavs(arrayOfContacts) {
   const myMap = {};
   arrayOfContacts.forEach((person) => {
     const maximNoOfLikes = person.likes;
-    if (typeof myMap[maximNoOfLikes] === 'undefined') {
+    if (myMap[maximNoOfLikes] === undefined) {
       // we create a new one
       myMap[maximNoOfLikes] = [];
     }
