@@ -8,6 +8,7 @@ const ADD_BUTTON = document.getElementById('add-button');
 const FIRST_NAME = document.getElementById('first-name');
 const LAST_NAME = document.getElementById('last-name');
 const IMAGE_PROFILE = document.getElementById('profile-image');
+const ADD_FORM_MAIN = document.getElementById('add-form');
 
 export const DOCUMENT_ELEMENTS = {
   FAVOURITES: {
@@ -19,6 +20,7 @@ export const DOCUMENT_ELEMENTS = {
     DELETE_ALL_BUTTON
   },
   ADD_FORM: {
+    ADD_FORM_MAIN,
     ADD_BUTTON,
     FIRST_NAME,
     LAST_NAME,
@@ -38,6 +40,10 @@ export const ID_CONSTANTS = {
   ID_LENGTH
 };
 
+// TOP N ELEMENTS
+
+export const NUMBER_TOP = 5;
+
 // PREFIXES FOR CONTACTS IDs CONVENTION
 
 export const PREFIXES_ID_CONTACTS = {
@@ -56,6 +62,9 @@ export const ALPHABET_ARRAY = ('abcdefghijklmnopqrstuvwxyz').split('');
 // NUMBERS
 
 export const NINE = 9;
+export const ZERO = 0;
+export const ONE = 1;
+export const MINUS_ONE = -1;
 export const MAX_NUMBER_OF_LIKES = 99;
 export const MIN_NUMBER_OF_LIKES = 0;
 
@@ -71,7 +80,8 @@ export const TAGS = {
   BUTTON: 'button',
   IMAGE: 'img',
   INPUT: 'input',
-  SPAN: 'span'
+  SPAN: 'span',
+  PARAGRAPH: 'p'
 };
 
 // TYPES
@@ -88,7 +98,8 @@ export const CALSSES = {
   AVATAR: 'avatar',
   FULL_NAME: 'full-name',
   TRASH: 'trash',
-  MARGIN_RIGHT: 'margin-right'
+  MARGIN_RIGHT: 'margin-right',
+  ALIGN_CENTER: 'align-center'
 };
 
 export const SYMBOLS = {
@@ -111,3 +122,24 @@ export const ALT = {
 export const IMAGES = {
   TRASH: 'images/trash-1.png'
 };
+
+export const MESSAGES = {
+  DELETE_ALL: 'Delete All',
+  DELETE_ALL_PREFIX: 'Delete All ',
+  ARE_YOU_SURE: 'ARE YOU SURE YOU WANT TO DO THIS ?',
+  ERROR_NAME: 'Your name contains special characters',
+  ERROR_URL: 'Your image is not an url',
+  ADDED_SUCCESSFULLY_SUFIX: ' was added successfully'
+};
+
+
+export const REGEX = {
+  NAME: /^[A-Za-z0-9 ]+$/,
+  URL: /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/ // eslint-disable-line
+};
+
+
+// HELPER CONSTANTS
+
+export const EMPTY = '';
+export const NOT_FOUND = -1;

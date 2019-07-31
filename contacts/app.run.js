@@ -1,15 +1,24 @@
 import ContactsService from './contacts.service';
-import { reRenderContactsListHTML } from './html-helper';
-import { eventsHandlerContacts } from './contacts-handle';
+import {
+  reRenderContactsListHTML,
+  reRenderFavouritesListHTML
+} from './html-helper';
+import {
+  eventsHandlerContacts
+} from './contacts-handle';
+import {
+  deleteAllButtonAction,
+  clearButtonAction,
+  addNewPerson,
+  changeAddButtonState
+} from './buttons.helper';
 
 
 const main = () => {
 
-  ContactsService.printAll();
-  
+  reRenderFavouritesListHTML();
+
   reRenderContactsListHTML();
-  
-  ContactsService.saveContactsServiceToLocalStorage();
 
 };
 
@@ -18,5 +27,11 @@ main();
 
 
 window.ui = {
-  eventsHandlerContacts
+  eventsHandlerContacts,
+  deleteAllButtonAction,
+  clearButtonAction,
+  addNewPerson,
+  changeAddButtonState
 };
+
+window.onbeforeunload = ContactsService.saveContactsServiceToLocalStorage;

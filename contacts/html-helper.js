@@ -1,5 +1,4 @@
 import {
-  ID_CONSTANTS,
   DOCUMENT_ELEMENTS,
   MAX_NUMBER_OF_LIKES,
   MIN_NUMBER_OF_LIKES,
@@ -9,24 +8,16 @@ import {
   CUSTOMS,
   ALT,
   TYPES,
-  IMAGES
+  IMAGES,
+  MESSAGES,
+  NUMBER_TOP,
+  EMPTY
 } from './constants';
 import ContactsService from './contacts.service';
-
-
-const isString = string => typeof string === 'string';
-
-export const getPersonObjectByHTMLElementId = (htmlElementId) => {
-  // we know that the last ID_LENGTH characters in htmlId related to a
-  // person object is the id the of the the person object
-  if (!isString(htmlElementId)) {
-    throw new Error(`${htmlElementId} is not a string instance`);
-  }
-  if (htmlElementId.length <= ID_CONSTANTS.ID_LENGTH) {
-    throw new Error(`${htmlElementId} has no person id in it`);
-  }
-  return htmlElementId.slice(htmlElementId - ID_CONSTANTS.ID_LENGTH);
-};
+import { // eslint-disable-line
+  areContactsChecked,
+  getNumberSelectedContacts
+} from './buttons.helper';
 
 
 const createListItemPersonHTML = (parent, person) => {
@@ -37,7 +28,7 @@ const createListItemPersonHTML = (parent, person) => {
   return newLi;
 };
 
-const isCountEqualToMax = person => person.id === MAX_NUMBER_OF_LIKES;
+const isCountEqualToMax = person => person.likes === MAX_NUMBER_OF_LIKES; // MOVE TO HELPER.JS
 
 const createPlusButtonPersonHTML = (parent, person) => {
   const plusButton = document.createElement(TAGS.BUTTON);
@@ -56,7 +47,7 @@ const createCountLikesPersonHTML = (parent, person) => {
   parent.appendChild(favCount);
 };
 
-const isCountEqualToMin = person => person.id === MIN_NUMBER_OF_LIKES;
+const isCountEqualToMin = person => person.likes === MIN_NUMBER_OF_LIKES; // MOVE TO HELPER.JS
 
 const createMinusButtonPersonHTML = (parent, person) => {
   const minusButton = document.createElement(TAGS.BUTTON);
@@ -80,6 +71,7 @@ const createCheckboxPersonHTML = (parent, person) => {
   checkbox.type = TYPES.CHECKBOX;
   checkbox.custom = CUSTOMS.CHECKBOX;
   checkbox.id = person.checkBoxId;
+  checkbox.disabled = false;
   parent.appendChild(checkbox);
 };
 
@@ -120,14 +112,91 @@ const addToHTMLNewPerson = (person) => {
 };
 
 const clearContactsListHTML = () => {
-  DOCUMENT_ELEMENTS.CONTACTS.CONTACTS_LIST.innerHTML = '';
+  DOCUMENT_ELEMENTS.CONTACTS.CONTACTS_LIST.innerHTML = EMPTY;
 };
 
 const populateContactsListHTML = () => {
   ContactsService.internalArrayContacts.forEach(element => addToHTMLNewPerson(element));
 };
 
+
 export const reRenderContactsListHTML = () => {
   clearContactsListHTML();
   populateContactsListHTML();
+};
+
+
+export const resetDeleteAllButtonValueAndState = () => {
+  DOCUMENT_ELEMENTS.CONTACTS.DELETE_ALL_BUTTON.innerHTML = MESSAGES.DELETE_ALL;
+  DOCUMENT_ELEMENTS.CONTACTS.DELETE_ALL_BUTTON.disabled = true;
+};
+
+
+export const setButtonDisabled = (button) => {
+  button.disabled = true; // eslint-disable-line
+};
+
+
+export const setButtonEnabled = (button) => {
+  button.disabled = false; // eslint-disable-line
+};
+
+
+export const changeDeleteAllButtonValueAndState = () => {
+  const NUMBER_CHECKED_CONTACTS = getNumberSelectedContacts();
+  if (areContactsChecked()) {
+    DOCUMENT_ELEMENTS.CONTACTS.DELETE_ALL_BUTTON.innerHTML = `${MESSAGES.DELETE_ALL_PREFIX}${NUMBER_CHECKED_CONTACTS}`;
+    setButtonEnabled(DOCUMENT_ELEMENTS.CONTACTS.DELETE_ALL_BUTTON);
+  } else {
+    DOCUMENT_ELEMENTS.CONTACTS.DELETE_ALL_BUTTON.innerHTML = MESSAGES.DELETE_ALL_PREFIX;
+    setButtonDisabled(DOCUMENT_ELEMENTS.CONTACTS.DELETE_ALL_BUTTON);
+  }
+};
+
+
+export const clearFavouritesListHTML = () => {
+  DOCUMENT_ELEMENTS.FAVOURITES.FAVS_LIST.innerHTML = EMPTY;
+};
+
+
+const creatParagraphForNumber = (parent, number) => {
+  const p = document.createElement(TAGS.PARAGRAPH);
+  p.innerHTML = number;
+  p.className = CALSSES.ALIGN_CENTER;
+  parent.appendChild(p);
+};
+
+const populateFavouritesListHTML = () => {
+  const NUMBERS = Object.keys(ContactsService.getTopFavsListMap).sort().reverse();
+  NUMBERS.forEach((number, i) => {
+    if (i >= NUMBER_TOP) return;
+    creatParagraphForNumber(DOCUMENT_ELEMENTS.FAVOURITES.FAVS_LIST, number);
+    ContactsService.getTopFavsListMap[number].forEach((person) => {
+      const li = createListItemPersonHTML(DOCUMENT_ELEMENTS.FAVOURITES.FAVS_LIST, person);
+      createCountLikesPersonHTML(li, person);
+      createAvatarImagePersonHTML(li, person);
+      createFullNamePersonHTML(li, person);
+    });
+  });
+};
+
+
+export const reRenderFavouritesListHTML = () => {
+  clearFavouritesListHTML();
+  if (ContactsService.arePersonsWithLikes()) {
+    populateFavouritesListHTML();
+  }
+};
+
+
+export const geInput = element => element.value;
+
+
+export const clearFormInputs = () => {
+  DOCUMENT_ELEMENTS.ADD_FORM.ADD_FORM_MAIN.reset();
+};
+
+
+export const addedSuccessfullyPerson = (person) => {
+  alert(`${person.fullName}${MESSAGES.ADDED_SUCCESSFULLY_SUFIX}`); // eslint-disable-line
 };

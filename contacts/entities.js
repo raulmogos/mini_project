@@ -11,7 +11,11 @@ export class Person {
     this.image = person.image;
     this.likes = person.likes;
   }
-  
+
+  get fullName() {
+    return `${this.firstName} ${this.lastName}`;
+  }
+
   get listItemId() {
     return `${PREFIXES_ID_CONTACTS.LIST_ITEM}${this.id}`;
   }
@@ -43,4 +47,13 @@ export class Person {
   get trashId() {
     return `${PREFIXES_ID_CONTACTS.TRASH}${this.id}`;
   }
+
+  decrementLikes() {
+    this.likes--;
+  }
+
+  incrementLikes() {
+    this.likes++;
+  }
+  
 }

@@ -41,7 +41,7 @@
             -->
           </ul>
           <div class="align-center">
-            <button id="delete-all-button" onclick="ui.deleteAllButtonAction()" class="button">Delete All</button>
+            <button id="delete-all-button" onclick="ui.deleteAllButtonAction()" class="button" disabled=true>Delete All</button>
           </div>
         </div>
         <div class="favourites">
@@ -63,7 +63,7 @@
         <div>
           <input id="profile-image" oninput="ui.changeAddButtonState()" type="url" name="profile_img" placeholder="Your profile image">
         </div>
-        <button id="add-button" onclick="ui.addNewPerson()" class="button" type="button" >Add</button>
+        <button id="add-button" onclick="ui.addNewPerson()" class="button" type="button" disabled=true>Add</button>
       </form>
     </main>
 
