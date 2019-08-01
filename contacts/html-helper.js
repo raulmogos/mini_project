@@ -107,12 +107,11 @@ const addToHTMLNewPerson = (person) => {
 };
 
 
-export const populateContactsListHTML = () => {
-  ContactsService.internalArrayContacts.forEach(element => addToHTMLNewPerson(element));
-};
+export const populateContactsListHTML = () => ContactsService.internalArrayContacts
+  .forEach(element => addToHTMLNewPerson(element));
 
 
-const reDrawContactsList = (person = 0, target = 0) => {
+const reDrawContactsList = (person = null, target = null) => {
   switch (target) {
     case CUSTOMS.MINUS_BUTTON:
       document.getElementById(person.likesCountId).innerHTML = person.likes;
@@ -133,8 +132,8 @@ const reDrawContactsList = (person = 0, target = 0) => {
 };
 
 
-export const reRenderContactsListHTML = (person = 0, target = 0) => {
-  if (person === 0 && target === 0) {
+export const reRenderContactsListHTML = (person = null, target = null) => {
+  if (!person && !target) {
     getElementById(DOCUMENT_ELEMENTS.CONTACTS.CONTACTS_LIST).innerHTML = UTILS.EMPTY_STRING;
     populateContactsListHTML();
   }
@@ -142,9 +141,7 @@ export const reRenderContactsListHTML = (person = 0, target = 0) => {
 };
 
 
-export const setButtonStatus = (button, status) => {
-  button.disabled = !status; // eslint-disable-line
-};
+export const setButtonStatus = (button, status) => button.disabled = !status; // eslint-disable-line
 
 
 export const resetDeleteAllButtonValueAndState = () => {
@@ -166,9 +163,7 @@ export const changeDeleteAllButtonValueAndState = () => {
 };
 
 
-export const clearFavouritesListHTML = () => {
-  getElementById(DOCUMENT_ELEMENTS.FAVOURITES.FAVS_LIST).innerHTML = UTILS.EMPTY_STRING;
-};
+export const clearFavouritesListHTML = () => getElementById(DOCUMENT_ELEMENTS.FAVOURITES.FAVS_LIST).innerHTML = UTILS.EMPTY_STRING; // eslint-disable-line
 
 
 const creatParagraphForNumber = (parent, number) => {
@@ -204,26 +199,14 @@ export const reRenderFavouritesListHTML = () => {
 export const geInput = element => element.value;
 
 
-export const clearFormInputs = () => {
-  getElementById(DOCUMENT_ELEMENTS.ADD_FORM.ADD_FORM_MAIN).reset();
-};
+export const clearFormInputs = () => getElementById(DOCUMENT_ELEMENTS.ADD_FORM.ADD_FORM_MAIN).reset();
 
 
-export const addedSuccessfullyPerson = (person) => {
-  alert(`${person.fullName}${MESSAGES.ADDED_SUCCESSFULLY_SUFIX}`); // eslint-disable-line
-};
+export const addedSuccessfullyPerson = (person) => alert(`${person.fullName}${MESSAGES.ADDED_SUCCESSFULLY_SUFIX}`); // eslint-disable-line
 
 
-export const isCheckboxChecked = checkBoxId => document.getElementById(checkBoxId).checked;
+export const isCheckboxChecked = checkBoxId => getElementById(checkBoxId).checked;
 
 
-export const setCheckboxUnchecked = (checkBoxId) => {
-  document.getElementById(checkBoxId).checked = false;
-};
-
-
-export const clearCheckedBoxesHTML = () => {
-  ContactsService.getCheckedContacts().forEach((person) => {
-    setCheckboxUnchecked(person.checkBoxId);
-  });
-};
+export const clearCheckedBoxesHTML = () => ContactsService.getCheckedContacts()
+  .forEach(person => getElementById(person.checkBoxId).checked = false); // eslint-disable-line

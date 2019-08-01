@@ -100,8 +100,6 @@ export const MESSAGES = {
   ERROR_NAME: 'Your name contains special characters',
   ERROR_URL: 'Your image is not an url',
   ADDED_SUCCESSFULLY_SUFIX: ' was added successfully',
-  DOES_NOT_EXIST: 'does not exist',
-  NOT_INSTANCE: ' is not a good instance'
 };
 
 

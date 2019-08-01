@@ -79,7 +79,6 @@ const clearButtonAction = () => {
   clearFavouritesListHTML();
 };
 
-
 const changeAddButtonState = () => {
   const firstName = geInput(getElementById(DOCUMENT_ELEMENTS.ADD_FORM.FIRST_NAME));
   const lastName = geInput(getElementById(DOCUMENT_ELEMENTS.ADD_FORM.LAST_NAME));
