@@ -1,44 +1,22 @@
 import {
-  ALPHABET_ARRAY,
   ID_CONSTANTS,
-  NINE,
   EMPTY,
   ZERO,
   ONE,
-  MINUS_ONE
+  MINUS_ONE,
+  MAX_NUMBER_OF_LIKES,
+  MIN_NUMBER_OF_LIKES
 } from './constants';
-import { Person } from './entities';
+import {
+  Person
+} from './entities';
 
-
-const getRandomNumber = upperBound => Math.floor(Math.random() * upperBound) % upperBound;
-
-const shuffleArray = (inputArray) => {
-  const ARRAY_LENTGH = inputArray.length;
-  for (let i = ZERO; i < ARRAY_LENTGH; i++) {
-    const RAND_NUMBER_1 = getRandomNumber(ARRAY_LENTGH);
-    const RAND_NUMBER_2 = getRandomNumber(ARRAY_LENTGH);
-    [inputArray[RAND_NUMBER_1], inputArray[RAND_NUMBER_2]] = [inputArray[RAND_NUMBER_2], inputArray[RAND_NUMBER_1]]; // eslint-disable-line
-  }
-};
-
-const getRandomChar = () => {
-  const ARRAY_LENTGH = ALPHABET_ARRAY.length;
-  const RAND_NUMBER = getRandomNumber(ARRAY_LENTGH);
-  return ALPHABET_ARRAY[RAND_NUMBER];
-};
 
 // id generator
 // returns a string
 export const generateUniqueID = () => {
-  const finalArrayId = [];
-  for (let i = ZERO; i < ID_CONSTANTS.NO_OF_NUMBERS; i++) {
-    finalArrayId.push(getRandomNumber(NINE));
-  }
-  for (let i = ZERO; i < ID_CONSTANTS.NO_OF_CHARS; i++) {
-    finalArrayId.push(getRandomChar());
-  }
-  shuffleArray(finalArrayId);
-  return finalArrayId.join(EMPTY);
+  const s4 = () => Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+  return `${s4()}-${s4()}-${s4()}-${s4()}`;
 };
 
 
@@ -51,7 +29,7 @@ export const getPersonIdByHTMLElementId = htmlElementId => htmlElementId
 export const sortArrayAlphabetically = (arrayOfContacts) => {
   arrayOfContacts.sort((person1, person2) => {
     if (person1.fullName > person2.fullName) return ONE;
-    if (person1.fullName < person2.fullName) return -MINUS_ONE;
+    if (person1.fullName < person2.fullName) return MINUS_ONE;
     return ZERO;
   });
 };
@@ -63,11 +41,30 @@ export const sortArrayByLikes = (arrayOfContacts) => {
 };
 
 
+export const isCountEqualToMax = person => person.likes === MAX_NUMBER_OF_LIKES;
+
+
+export const isCountEqualToMin = person => person.likes === MIN_NUMBER_OF_LIKES;
+
+
 export const isUndefined = item => item === undefined;
 
 
 export const isEmpty = input => input === EMPTY;
+
+
 export const isNull = input => input === null;
+
+
 export const isZero = input => input === ZERO;
 
-export const createPerson = obj => new Person(obj);
+
+export const createPersonInstance = obj => new Person(obj);
+
+
+export const localStorageServie = {
+  saveToLocalStorage: (stringName, object) => {
+    localStorage.setItem(stringName, JSON.stringify(object));
+  },
+  getFromLocalStorage: stringName => JSON.parse(localStorage.getItem(stringName))
+};

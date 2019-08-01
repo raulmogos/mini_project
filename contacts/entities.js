@@ -1,5 +1,6 @@
 import {
-  PREFIXES_ID_CONTACTS
+  PREFIXES_ID_CONTACTS,
+  ZERO
 } from './constants';
 
 // person entity
@@ -10,6 +11,7 @@ export class Person {
     this.lastName = person.lastName;
     this.image = person.image;
     this.likes = person.likes;
+    this.isChecked = person.isChecked;
   }
 
   get fullName() {
@@ -48,6 +50,10 @@ export class Person {
     return `${PREFIXES_ID_CONTACTS.TRASH}${this.id}`;
   }
 
+  setToZero() {
+    this.likes = ZERO;
+  }
+
   decrementLikes() {
     this.likes--;
   }
@@ -55,5 +61,13 @@ export class Person {
   incrementLikes() {
     this.likes++;
   }
+
+  setReversedChecked() {
+    this.isChecked = !this.isChecked;
+  }
   
+  setUnchecked() {
+    this.isChecked = false;
+  }
+
 }

@@ -55,13 +55,13 @@
       <form id="add-form" class="add">
         <h2 class="align-center">Add new contact</h2>
         <div>
-          <input id="first-name" oninput="ui.changeAddButtonState()" name="first_name" placeholder="Your first name" maxlength="20">
+          <input id="first-name" class="input-size" oninput="ui.changeAddButtonState()" name="first_name" placeholder="Your first name" maxlength="20">
         </div>
         <div>
-          <input id="last-name" oninput="ui.changeAddButtonState()" name="last_name" placeholder="Your last name" maxlength="20">
+          <input id="last-name"  class="input-size" oninput="ui.changeAddButtonState()" name="last_name" placeholder="Your last name" maxlength="20">
         </div>
         <div>
-          <input id="profile-image" oninput="ui.changeAddButtonState()" type="url" name="profile_img" placeholder="Your profile image">
+          <input id="profile-image"  class="input-size" oninput="ui.changeAddButtonState()" type="url" name="profile_img" placeholder="Your profile image">
         </div>
         <button id="add-button" onclick="ui.addNewPerson()" class="button" type="button" disabled=true>Add</button>
       </form>

@@ -1,7 +1,5 @@
 import {
   DOCUMENT_ELEMENTS,
-  MAX_NUMBER_OF_LIKES,
-  MIN_NUMBER_OF_LIKES,
   TAGS,
   CALSSES,
   SYMBOLS,
@@ -11,13 +9,14 @@ import {
   IMAGES,
   MESSAGES,
   NUMBER_TOP,
-  EMPTY
+  EMPTY,
+  ZERO,
 } from './constants';
 import ContactsService from './contacts.service';
-import { // eslint-disable-line
-  areContactsChecked,
-  getNumberSelectedContacts
-} from './buttons.helper';
+import { isCountEqualToMax, isCountEqualToMin, isZero } from './helper.js';
+
+
+export const getElementById = name => document.getElementById(name);
 
 
 const createListItemPersonHTML = (parent, person) => {
@@ -27,8 +26,6 @@ const createListItemPersonHTML = (parent, person) => {
   parent.appendChild(newLi);
   return newLi;
 };
-
-const isCountEqualToMax = person => person.likes === MAX_NUMBER_OF_LIKES; // MOVE TO HELPER.JS
 
 const createPlusButtonPersonHTML = (parent, person) => {
   const plusButton = document.createElement(TAGS.BUTTON);
@@ -46,8 +43,6 @@ const createCountLikesPersonHTML = (parent, person) => {
   favCount.innerHTML = person.likes;
   parent.appendChild(favCount);
 };
-
-const isCountEqualToMin = person => person.likes === MIN_NUMBER_OF_LIKES; // MOVE TO HELPER.JS
 
 const createMinusButtonPersonHTML = (parent, person) => {
   const minusButton = document.createElement(TAGS.BUTTON);
@@ -72,6 +67,7 @@ const createCheckboxPersonHTML = (parent, person) => {
   checkbox.custom = CUSTOMS.CHECKBOX;
   checkbox.id = person.checkBoxId;
   checkbox.disabled = false;
+  checkbox.checked = person.isChecked;
   parent.appendChild(checkbox);
 };
 
@@ -100,7 +96,7 @@ const createTrashPersonHTML = (parent, person) => {
 };
 
 const addToHTMLNewPerson = (person) => {
-  const newLi = createListItemPersonHTML(DOCUMENT_ELEMENTS.CONTACTS.CONTACTS_LIST, person);
+  const newLi = createListItemPersonHTML(getElementById(DOCUMENT_ELEMENTS.CONTACTS.CONTACTS_LIST), person);
   createPlusButtonPersonHTML(newLi, person);
   createCountLikesPersonHTML(newLi, person);
   createMinusButtonPersonHTML(newLi, person);
@@ -108,27 +104,52 @@ const addToHTMLNewPerson = (person) => {
   createCheckboxPersonHTML(newLi, person);
   createFullNamePersonHTML(newLi, person);
   createTrashPersonHTML(newLi, person);
-  DOCUMENT_ELEMENTS.CONTACTS.CONTACTS_LIST.appendChild(newLi);
+  getElementById(DOCUMENT_ELEMENTS.CONTACTS.CONTACTS_LIST).appendChild(newLi);
 };
 
 const clearContactsListHTML = () => {
-  DOCUMENT_ELEMENTS.CONTACTS.CONTACTS_LIST.innerHTML = EMPTY;
+  getElementById(DOCUMENT_ELEMENTS.CONTACTS.CONTACTS_LIST).innerHTML = EMPTY;
 };
 
-const populateContactsListHTML = () => {
+
+export const populateContactsListHTML = () => {
   ContactsService.internalArrayContacts.forEach(element => addToHTMLNewPerson(element));
 };
 
 
-export const reRenderContactsListHTML = () => {
-  clearContactsListHTML();
-  populateContactsListHTML();
+const reDrawContactsList = (person = ZERO, target = ZERO) => {
+  switch (target) {
+    case CUSTOMS.MINUS_BUTTON:
+      document.getElementById(person.likesCountId).innerHTML = person.likes;
+      document.getElementById(person.minusButtonId).disabled = isCountEqualToMin(person);
+      document.getElementById(person.plusButtonId).disabled = isCountEqualToMax(person);
+      break;
+    case CUSTOMS.PLUS_BUTTON:
+      document.getElementById(person.likesCountId).innerHTML = person.likes;
+      document.getElementById(person.minusButtonId).disabled = isCountEqualToMin(person);
+      document.getElementById(person.plusButtonId).disabled = isCountEqualToMax(person);
+      break;
+    case CUSTOMS.TRASH:
+      document.getElementById(person.listItemId).remove();
+      break;
+    default:
+      break;
+  }
+};
+
+
+export const reRenderContactsListHTML = (person = ZERO, tarsget = ZERO) => {
+  if (isZero(person) && isZero(tarsget)) {
+    clearContactsListHTML();
+    populateContactsListHTML();
+  }
+  reDrawContactsList(person, tarsget);
 };
 
 
 export const resetDeleteAllButtonValueAndState = () => {
-  DOCUMENT_ELEMENTS.CONTACTS.DELETE_ALL_BUTTON.innerHTML = MESSAGES.DELETE_ALL;
-  DOCUMENT_ELEMENTS.CONTACTS.DELETE_ALL_BUTTON.disabled = true;
+  getElementById(DOCUMENT_ELEMENTS.CONTACTS.DELETE_ALL_BUTTON).innerHTML = MESSAGES.DELETE_ALL;
+  getElementById(DOCUMENT_ELEMENTS.CONTACTS.DELETE_ALL_BUTTON).disabled = true;
 };
 
 
@@ -143,19 +164,20 @@ export const setButtonEnabled = (button) => {
 
 
 export const changeDeleteAllButtonValueAndState = () => {
-  const NUMBER_CHECKED_CONTACTS = getNumberSelectedContacts();
-  if (areContactsChecked()) {
-    DOCUMENT_ELEMENTS.CONTACTS.DELETE_ALL_BUTTON.innerHTML = `${MESSAGES.DELETE_ALL_PREFIX}${NUMBER_CHECKED_CONTACTS}`;
-    setButtonEnabled(DOCUMENT_ELEMENTS.CONTACTS.DELETE_ALL_BUTTON);
+  const NUMBER_CHECKED_CONTACTS = ContactsService.getNumberSelectedContacts();
+  const deleteAllButton = getElementById(DOCUMENT_ELEMENTS.CONTACTS.DELETE_ALL_BUTTON);
+  if (ContactsService.areContactsChecked()) {
+    deleteAllButton.innerHTML = `${MESSAGES.DELETE_ALL_PREFIX}${NUMBER_CHECKED_CONTACTS}`;
+    setButtonEnabled(deleteAllButton);
   } else {
-    DOCUMENT_ELEMENTS.CONTACTS.DELETE_ALL_BUTTON.innerHTML = MESSAGES.DELETE_ALL_PREFIX;
-    setButtonDisabled(DOCUMENT_ELEMENTS.CONTACTS.DELETE_ALL_BUTTON);
+    deleteAllButton.innerHTML = MESSAGES.DELETE_ALL_PREFIX;
+    setButtonDisabled(deleteAllButton);
   }
 };
 
 
 export const clearFavouritesListHTML = () => {
-  DOCUMENT_ELEMENTS.FAVOURITES.FAVS_LIST.innerHTML = EMPTY;
+  getElementById(DOCUMENT_ELEMENTS.FAVOURITES.FAVS_LIST).innerHTML = EMPTY;
 };
 
 
@@ -167,12 +189,12 @@ const creatParagraphForNumber = (parent, number) => {
 };
 
 const populateFavouritesListHTML = () => {
-  const NUMBERS = Object.keys(ContactsService.getTopFavsListMap).sort().reverse();
+  const NUMBERS = Object.keys(ContactsService.getTopFavsListMap).sort((a, b) => b - a);
   NUMBERS.forEach((number, i) => {
     if (i >= NUMBER_TOP) return;
-    creatParagraphForNumber(DOCUMENT_ELEMENTS.FAVOURITES.FAVS_LIST, number);
+    creatParagraphForNumber(getElementById(DOCUMENT_ELEMENTS.FAVOURITES.FAVS_LIST), number);
     ContactsService.getTopFavsListMap[number].forEach((person) => {
-      const li = createListItemPersonHTML(DOCUMENT_ELEMENTS.FAVOURITES.FAVS_LIST, person);
+      const li = createListItemPersonHTML(getElementById(DOCUMENT_ELEMENTS.FAVOURITES.FAVS_LIST), person);
       createCountLikesPersonHTML(li, person);
       createAvatarImagePersonHTML(li, person);
       createFullNamePersonHTML(li, person);
@@ -193,10 +215,25 @@ export const geInput = element => element.value;
 
 
 export const clearFormInputs = () => {
-  DOCUMENT_ELEMENTS.ADD_FORM.ADD_FORM_MAIN.reset();
+  getElementById(DOCUMENT_ELEMENTS.ADD_FORM.ADD_FORM_MAIN).reset();
 };
 
 
 export const addedSuccessfullyPerson = (person) => {
   alert(`${person.fullName}${MESSAGES.ADDED_SUCCESSFULLY_SUFIX}`); // eslint-disable-line
+};
+
+
+export const isCheckboxChecked = checkBoxId => document.getElementById(checkBoxId).checked;
+
+
+export const setCheckboxUnchecked = (checkBoxId) => {
+  document.getElementById(checkBoxId).checked = false;
+};
+
+
+export const clearCheckedBoxesHTML = () => {
+  ContactsService.getCheckedContacts().forEach((person) => {
+    setCheckboxUnchecked(person.checkBoxId);
+  });
 };

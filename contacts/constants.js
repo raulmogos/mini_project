@@ -1,14 +1,14 @@
 // MODULE FOR CONSTANTS
 
-const DELETE_ALL_BUTTON = document.getElementById('delete-all-button');
-const CLEAR_ALL_BUTTON = document.getElementById('clear-button');
-const FAVS_LIST = document.getElementById('favs-list');
-const CONTACTS_LIST = document.getElementById('contacts-list');
-const ADD_BUTTON = document.getElementById('add-button');
-const FIRST_NAME = document.getElementById('first-name');
-const LAST_NAME = document.getElementById('last-name');
-const IMAGE_PROFILE = document.getElementById('profile-image');
-const ADD_FORM_MAIN = document.getElementById('add-form');
+const DELETE_ALL_BUTTON = 'delete-all-button';
+const CLEAR_ALL_BUTTON = 'clear-button';
+const FAVS_LIST = 'favs-list';
+const CONTACTS_LIST = 'contacts-list';
+const ADD_BUTTON = 'add-button';
+const FIRST_NAME = 'first-name';
+const LAST_NAME = 'last-name';
+const IMAGE_PROFILE = 'profile-image';
+const ADD_FORM_MAIN = 'add-form';
 
 export const DOCUMENT_ELEMENTS = {
   FAVOURITES: {
@@ -30,13 +30,9 @@ export const DOCUMENT_ELEMENTS = {
 
 // CONSTANTS FOR ID
 
-const NO_OF_NUMBERS = 4;
-const NO_OF_CHARS = 4;
-const ID_LENGTH = NO_OF_NUMBERS + NO_OF_CHARS;
+const ID_LENGTH = 19;
 
 export const ID_CONSTANTS = {
-  NO_OF_NUMBERS,
-  NO_OF_CHARS,
   ID_LENGTH
 };
 
@@ -56,8 +52,6 @@ export const PREFIXES_ID_CONTACTS = {
   FULL_NAME: 'full-name-',
   TRASH: 'trash-'
 };
-
-export const ALPHABET_ARRAY = ('abcdefghijklmnopqrstuvwxyz').split('');
 
 // NUMBERS
 
@@ -129,7 +123,9 @@ export const MESSAGES = {
   ARE_YOU_SURE: 'ARE YOU SURE YOU WANT TO DO THIS ?',
   ERROR_NAME: 'Your name contains special characters',
   ERROR_URL: 'Your image is not an url',
-  ADDED_SUCCESSFULLY_SUFIX: ' was added successfully'
+  ADDED_SUCCESSFULLY_SUFIX: ' was added successfully',
+  DOES_NOT_EXIST: 'does not exist',
+  NOT_INSTANCE: ' is not a good instance'
 };
 
 

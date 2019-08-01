@@ -1,5 +1,6 @@
 import { REGEX, MESSAGES } from './constants';
 
+
 export const validateName = (name) => {
   const regex = REGEX.NAME;
   if (!regex.test(name)) {

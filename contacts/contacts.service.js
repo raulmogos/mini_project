@@ -7,17 +7,17 @@ import {
 import {
   CONTACTS_SERVICE_OBJECT_NAME,
   NOT_FOUND,
-  ZERO
+  MESSAGES
 } from './constants';
-import { sortArrayAlphabetically, sortArrayByLikes, isUndefined } from './helper';
-
-
-const localStorageServie = {
-  saveToLocalStorage: (stringName, object) => {
-    localStorage.setItem(stringName, JSON.stringify(object));
-  },
-  getFromLocalStorage: stringName => JSON.parse(localStorage.getItem(stringName))
-};
+import {
+  sortArrayAlphabetically,
+  sortArrayByLikes,
+  isUndefined,
+  isZero,
+  isNull,
+  createPersonInstance,
+  localStorageServie
+} from './helper';
 
 
 export class ContactsService {
@@ -29,18 +29,19 @@ export class ContactsService {
 
   init = () => {
     const localStorageObject = localStorageServie.getFromLocalStorage(CONTACTS_SERVICE_OBJECT_NAME);
-    if (localStorageObject !== null && localStorageObject.length !== ZERO) {
-      this.internalArrayContacts = localStorageObject.map(item => new Person(item));
+    if (!isNull(localStorageObject) && !isZero(localStorageObject.length)) {
+      this.internalArrayContacts = localStorageObject.map(item => createPersonInstance(item));
     } else {
-      this.internalArrayContacts = data.map(item => new Person(item));
+      this.internalArrayContacts = data.map(item => createPersonInstance(item));
     }
     // this.internalArrayContacts = [];
   }
 
   getPersonById = (personId) => {
+    // returns an object of type Person
     const toReturnObject = this.internalArrayContacts.find(item => item.id === personId);
-    if (toReturnObject === undefined) {
-      throw new Error(`${personId} does not exist`);
+    if (isUndefined(toReturnObject)) {
+      throw new Error(`${personId}${MESSAGES.DOES_NOT_EXIST}`);
     }
     return toReturnObject;
   }
@@ -49,7 +50,7 @@ export class ContactsService {
 
   addPerson = (person) => {
     if (!(person instanceof Person)) {
-      throw new Error(`${person} is not a 'Person' instance`);
+      throw new Error(`${person}${MESSAGES.NOT_INSTANCE}`);
     }
     this.internalArrayContacts.unshift(person);
   }
@@ -59,14 +60,14 @@ export class ContactsService {
   removePerson = (personId) => {
     const index = this.internalArrayContacts.map(x => x.id).indexOf(personId);
     if (index === NOT_FOUND) {
-      throw new Error(`${personId} does not exist`);
+      throw new Error(`${personId}${MESSAGES.DOES_NOT_EXIST}`);
     }
     this.internalArrayContacts.splice(index, 1);
   }
 
   // arePersonsWithLikes -> true / false
 
-  arePersonsWithLikes = () => this.internalArrayContacts.some(item => item.likes !== 0);
+  arePersonsWithLikes = () => this.internalArrayContacts.some(item => !isZero(item.likes));
 
   // save all to local storage
 
@@ -78,9 +79,37 @@ export class ContactsService {
 
   setAllLikesToZero = () => {
     this.internalArrayContacts.forEach((person) => {
-      person.likes = ZERO; // eslint-disable-line
+      person.setToZero();
     });
   }
+
+  // set all isChecked to false
+
+  setAllToUnchecked = () => {
+    this.internalArrayContacts.forEach((person) => {
+      person.setUnchecked();
+    });
+  };
+
+  // are contacts with isChecked == true
+
+  areContactsChecked = () => this.internalArrayContacts.some(person => person.isChecked);
+
+  // get selected contacts
+
+  getCheckedContacts = () => this.internalArrayContacts.filter(person => person.isChecked);
+
+  //
+
+  getNumberSelectedContacts = () => this.internalArrayContacts.filter(person => person.isChecked).length;
+
+  // delete checked contacts
+
+  deleteCheckedContacts = () => {
+    this.internalArrayContacts.filter(person => person.isChecked).forEach((person) => {
+      this.removePerson(person.id);
+    });
+  };
 
   // get top
 
@@ -102,6 +131,10 @@ export class ContactsService {
 
   printAll = () => {
     this.internalArrayContacts.forEach((item) => {
+      console.log(item); // eslint-disable-line
+    });
+    console.log('-----------------'); // eslint-disable-line
+    this.getCheckedContacts().forEach((item) => {
       console.log(item); // eslint-disable-line
     });
   }
