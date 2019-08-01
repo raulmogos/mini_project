@@ -1,6 +1,5 @@
 import {
   DOCUMENT_ELEMENTS,
-  ZERO
 } from './constants';
 import {
   geInput,
@@ -27,7 +26,7 @@ export const getTheNewPerson = () => {
     firstName,
     lastName,
     image,
-    likes: ZERO,
+    likes: 0,
     isChecked: false
   };
 };

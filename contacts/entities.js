@@ -1,6 +1,5 @@
 import {
   PREFIXES_ID_CONTACTS,
-  ZERO
 } from './constants';
 
 // person entity
@@ -51,7 +50,7 @@ export class Person {
   }
 
   setToZero() {
-    this.likes = ZERO;
+    this.likes = 0;
   }
 
   decrementLikes() {

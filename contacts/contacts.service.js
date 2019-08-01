@@ -6,17 +6,12 @@ import {
 } from './entities';
 import {
   CONTACTS_SERVICE_OBJECT_NAME,
-  NOT_FOUND,
+  UTILS,
   MESSAGES
 } from './constants';
 import {
-  sortArrayAlphabetically,
-  sortArrayByLikes,
-  isUndefined,
-  isZero,
-  isNull,
   createPersonInstance,
-  localStorageServie
+  localStorageService
 } from './helper';
 
 
@@ -28,25 +23,18 @@ export class ContactsService {
   }
 
   init = () => {
-    const localStorageObject = localStorageServie.getFromLocalStorage(CONTACTS_SERVICE_OBJECT_NAME);
-    if (!isNull(localStorageObject) && !isZero(localStorageObject.length)) {
-      this.internalArrayContacts = localStorageObject.map(item => createPersonInstance(item));
-    } else {
-      this.internalArrayContacts = data.map(item => createPersonInstance(item));
-    }
-    // this.internalArrayContacts = [];
+    const localStorageObject = localStorageService.getFromLocalStorage(CONTACTS_SERVICE_OBJECT_NAME);
+    this.internalArrayContacts = (localStorageObject && localStorageObject.length) ? localStorageObject.map(item =>
+      createPersonInstance(item)) : data.map(item => createPersonInstance(item)); // eslint-disable-line
   }
 
   getPersonById = (personId) => {
-    // returns an object of type Person
     const toReturnObject = this.internalArrayContacts.find(item => item.id === personId);
-    if (isUndefined(toReturnObject)) {
+    if (!toReturnObject) {
       throw new Error(`${personId}${MESSAGES.DOES_NOT_EXIST}`);
     }
     return toReturnObject;
   }
-
-  // add
 
   addPerson = (person) => {
     if (!(person instanceof Person)) {
@@ -55,27 +43,19 @@ export class ContactsService {
     this.internalArrayContacts.unshift(person);
   }
 
-  // remove one  person
-
   removePerson = (personId) => {
     const index = this.internalArrayContacts.map(x => x.id).indexOf(personId);
-    if (index === NOT_FOUND) {
+    if (index === UTILS.NOT_FOUND) {
       throw new Error(`${personId}${MESSAGES.DOES_NOT_EXIST}`);
     }
     this.internalArrayContacts.splice(index, 1);
   }
 
-  // arePersonsWithLikes -> true / false
-
-  arePersonsWithLikes = () => this.internalArrayContacts.some(item => !isZero(item.likes));
-
-  // save all to local storage
+  arePersonsWithLikes = () => this.internalArrayContacts.some(item => item.likes);
 
   saveContactsServiceToLocalStorage = () => {
-    localStorageServie.saveToLocalStorage(CONTACTS_SERVICE_OBJECT_NAME, this.internalArrayContacts);
+    localStorageService.saveToLocalStorage(CONTACTS_SERVICE_OBJECT_NAME, this.internalArrayContacts);
   }
-
-  // set all  likes to zero
 
   setAllLikesToZero = () => {
     this.internalArrayContacts.forEach((person) => {
@@ -83,27 +63,17 @@ export class ContactsService {
     });
   }
 
-  // set all isChecked to false
-
   setAllToUnchecked = () => {
     this.internalArrayContacts.forEach((person) => {
       person.setUnchecked();
     });
   };
 
-  // are contacts with isChecked == true
-
   areContactsChecked = () => this.internalArrayContacts.some(person => person.isChecked);
-
-  // get selected contacts
 
   getCheckedContacts = () => this.internalArrayContacts.filter(person => person.isChecked);
 
-  //
-
   getNumberSelectedContacts = () => this.internalArrayContacts.filter(person => person.isChecked).length;
-
-  // delete checked contacts
 
   deleteCheckedContacts = () => {
     this.internalArrayContacts.filter(person => person.isChecked).forEach((person) => {
@@ -111,32 +81,21 @@ export class ContactsService {
     });
   };
 
-  // get top
 
   get getTopFavsListMap() {
-    const ARRAY_CONTACTS_COPY = [...this.internalArrayContacts];
-    sortArrayByLikes(ARRAY_CONTACTS_COPY);
-    const FAVS_MAP = {};
-    ARRAY_CONTACTS_COPY.forEach((person) => {
-      if (isUndefined(FAVS_MAP[person.likes])) {
-        FAVS_MAP[person.likes] = [];
+    const arrayContactsCopy = [...this.internalArrayContacts];
+    arrayContactsCopy.sort((p1, p2) => p1.likes - p2.likes);
+    const favsMap = {};
+    arrayContactsCopy.forEach((person) => {
+      if (!favsMap[person.likes]) {
+        favsMap[person.likes] = [];
       }
-      FAVS_MAP[person.likes].push(person);
+      favsMap[person.likes].push(person);
     });
-    Object.keys(FAVS_MAP).forEach((key) => {
-      sortArrayAlphabetically(FAVS_MAP[key]);
+    Object.keys(favsMap).forEach((key) => {
+      favsMap[key].sort((person1, person2) => person1.fullName > person2.fullName ? 1 : -1); // eslint-disable-line
     });
-    return FAVS_MAP;
-  }
-
-  printAll = () => {
-    this.internalArrayContacts.forEach((item) => {
-      console.log(item); // eslint-disable-line
-    });
-    console.log('-----------------'); // eslint-disable-line
-    this.getCheckedContacts().forEach((item) => {
-      console.log(item); // eslint-disable-line
-    });
+    return favsMap;
   }
 
 }

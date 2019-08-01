@@ -1,46 +1,29 @@
-// MODULE FOR CONSTANTS
-
-const DELETE_ALL_BUTTON = 'delete-all-button';
-const CLEAR_ALL_BUTTON = 'clear-button';
-const FAVS_LIST = 'favs-list';
-const CONTACTS_LIST = 'contacts-list';
-const ADD_BUTTON = 'add-button';
-const FIRST_NAME = 'first-name';
-const LAST_NAME = 'last-name';
-const IMAGE_PROFILE = 'profile-image';
-const ADD_FORM_MAIN = 'add-form';
 
 export const DOCUMENT_ELEMENTS = {
   FAVOURITES: {
-    FAVS_LIST,
-    CLEAR_ALL_BUTTON
+    FAVS_LIST: 'favs-list',
+    CLEAR_ALL_BUTTON: 'clear-button'
   },
   CONTACTS: {
-    CONTACTS_LIST,
-    DELETE_ALL_BUTTON
+    CONTACTS_LIST: 'contacts-list',
+    DELETE_ALL_BUTTON: 'delete-all-button'
   },
   ADD_FORM: {
-    ADD_FORM_MAIN,
-    ADD_BUTTON,
-    FIRST_NAME,
-    LAST_NAME,
-    IMAGE_PROFILE
+    ADD_FORM_MAIN: 'add-form',
+    ADD_BUTTON: 'add-button',
+    FIRST_NAME: 'first-name',
+    LAST_NAME: 'last-name',
+    IMAGE_PROFILE: 'profile-image'
   }
 };
 
-// CONSTANTS FOR ID
-
-const ID_LENGTH = 19;
 
 export const ID_CONSTANTS = {
-  ID_LENGTH
+  ID_LENGTH: 19
 };
-
-// TOP N ELEMENTS
 
 export const NUMBER_TOP = 5;
 
-// PREFIXES FOR CONTACTS IDs CONVENTION
 
 export const PREFIXES_ID_CONTACTS = {
   LIST_ITEM: 'li-',
@@ -53,20 +36,15 @@ export const PREFIXES_ID_CONTACTS = {
   TRASH: 'trash-'
 };
 
-// NUMBERS
 
-export const NINE = 9;
-export const ZERO = 0;
-export const ONE = 1;
-export const MINUS_ONE = -1;
-export const MAX_NUMBER_OF_LIKES = 99;
-export const MIN_NUMBER_OF_LIKES = 0;
+export const LIKES = {
+  MAX_NUMBER_OF_LIKES: 99,
+  MIN_NUMBER_OF_LIKES: 0
+};
 
-// STRING NAMES
 
 export const CONTACTS_SERVICE_OBJECT_NAME = 'ContactsService';
 
-// TAGS
 
 export const TAGS = {
   LIST_ITEM: 'li',
@@ -78,15 +56,13 @@ export const TAGS = {
   PARAGRAPH: 'p'
 };
 
-// TYPES
 
 export const TYPES = {
   CHECKBOX: 'checkbox'
 };
 
-// CALSSES
 
-export const CALSSES = {
+export const CLASSES = {
   PERSON_FIELD: 'person-field',
   FAVS_COUNT: 'favs-count',
   AVATAR: 'avatar',
@@ -135,7 +111,7 @@ export const REGEX = {
 };
 
 
-// HELPER CONSTANTS
-
-export const EMPTY = '';
-export const NOT_FOUND = -1;
+export const UTILS = {
+  EMPTY_STRING: '',
+  NOT_FOUND: -1
+};

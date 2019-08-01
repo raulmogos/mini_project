@@ -7,19 +7,17 @@ import {
   clearCheckedBoxesHTML,
   clearFavouritesListHTML,
   geInput,
-  setButtonEnabled,
-  setButtonDisabled,
+  setButtonStatus,
   clearFormInputs,
   addedSuccessfullyPerson,
   populateContactsListHTML,
   getElementById
 } from './html-helper';
 import {
-  getTheNewPerson,
+  getTheNewPerson
 } from './buttons.helper';
 import {
   getPersonIdByHTMLElementId,
-  isEmpty,
   createPersonInstance
 } from './helper';
 import {
@@ -86,31 +84,25 @@ const changeAddButtonState = () => {
   const firstName = geInput(getElementById(DOCUMENT_ELEMENTS.ADD_FORM.FIRST_NAME));
   const lastName = geInput(getElementById(DOCUMENT_ELEMENTS.ADD_FORM.LAST_NAME));
   const imageProfile = geInput(getElementById(DOCUMENT_ELEMENTS.ADD_FORM.IMAGE_PROFILE));
-  if (!isEmpty(firstName) && !isEmpty(lastName) && !isEmpty(imageProfile)) {
-    setButtonEnabled(getElementById(DOCUMENT_ELEMENTS.ADD_FORM.ADD_BUTTON));
-  } else {
-    setButtonDisabled(getElementById(DOCUMENT_ELEMENTS.ADD_FORM.ADD_BUTTON));
-  }
+  setButtonStatus(getElementById(DOCUMENT_ELEMENTS.ADD_FORM.ADD_BUTTON),
+    (firstName && lastName && imageProfile));
 };
 
 
 const addNewPerson = () => {
   try {
-    const NEW_PERSON_OBJECT = getTheNewPerson();
-    const NEW_PERSON = createPersonInstance(NEW_PERSON_OBJECT);
-    ContactsService.addPerson(NEW_PERSON);
+    const newPersonObject = getTheNewPerson();
+    const newPerson = createPersonInstance(newPersonObject);
+    ContactsService.addPerson(newPerson);
     reRenderContactsListHTML();
     clearFormInputs();
     changeAddButtonState();
-    addedSuccessfullyPerson(NEW_PERSON);
+    addedSuccessfullyPerson(newPerson);
   } catch (err) {
     alert(err.message); // eslint-disable-line
     clearFormInputs();
   }
 };
-
-
-// --------------------------------
 
 
 reRenderFavouritesListHTML();
