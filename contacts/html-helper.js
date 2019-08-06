@@ -188,11 +188,24 @@ export const reRenderFavouritesListHTML = () => {
   }
 };
 
+export const notificationModal = (text) => {
+  const notification = document.createElement(TAGS.DIV);
+  const p = document.createElement(TAGS.PARAGRAPH);
+  p.innerHTML = text;
+  notification.appendChild(p);
+  notification.className = CLASSES.NOTIFICATION;
+  document.body.appendChild(notification);
+  setTimeout(() => {
+    notification.remove();
+  }, 3000);
+};
+
+
 export const geInput = element => element.value;
 
 export const clearFormInputs = () => getElementById(DOCUMENT_ELEMENTS.ADD_FORM.ADD_FORM_MAIN).reset();
 
-export const addedSuccessfullyPerson = (person) => notificationModal(`${person.fullName}${MESSAGES.ADDED_SUCCESSFULLY_SUFIX}`); // eslint-disable-line
+export const addedSuccessfullyPerson = person => notificationModal(`${person.fullName}${MESSAGES.ADDED_SUCCESSFULLY_SUFIX}`); // eslint-disable-line
 
 export const isCheckboxChecked = checkBoxId => getElementById(checkBoxId).checked;
 
@@ -211,15 +224,13 @@ export const confirmModal = (text, onSuccess = null, onFail = null) => {
   noButton.innerHTML = MESSAGES.NO;
   yesButton.onclick = () => {
     modal.remove();
-    if (onSuccess) {
-      onSuccess();
-    }
+    if (!onSuccess) return;
+    onSuccess();
   };
   noButton.onclick = () => {
     modal.remove();
-    if (onFail) {
-      onFail();
-    }
+    if (!onFail) return;
+    onFail();
   };
   modal.className = CLASSES.MODAL_CONFIRM;
   modalContent.className = CLASSES.MODAL_CONTENT;
@@ -229,16 +240,4 @@ export const confirmModal = (text, onSuccess = null, onFail = null) => {
   modalContent.appendChild(noButton);
   modal.appendChild(modalContent);
   document.body.appendChild(modal);
-};
-
-export const notificationModal = (text) => {
-  const notification = document.createElement(TAGS.DIV);
-  const p = document.createElement(TAGS.PARAGRAPH);
-  p.innerHTML = text;
-  notification.appendChild(p);
-  notification.className = CLASSES.NOTIFICATION;
-  document.body.appendChild(notification);
-  setTimeout(() => {
-    notification.remove();
-  }, 3000);
 };
