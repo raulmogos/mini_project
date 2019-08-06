@@ -24,7 +24,7 @@
       <div class="block">
         <div class="contacts">
           <h2 class="align-center type-title">Contacts</h2>
-          <ul id="contacts-list" class="list" onclick="eventsHandlerContacts(event)">
+          <ul id="contacts-list" class="list" onclick="ui.eventsHandlerContacts(event)">
             <!--
             <li class="person-field">
               <button>+</button>
@@ -41,29 +41,29 @@
             -->
           </ul>
           <div class="align-center">
-            <button id="delete-all-button" onclick="deleteAllButtonAction()" class="button">Delete All</button>
+            <button id="delete-all-button" onclick="ui.deleteAllButtonAction()" class="button">Delete All</button>
           </div>
         </div>
         <div class="favourites">
           <h2 class="align-center type-title">Favourites</h2>
-          <ol id="favs-list" class="list"></ol>
+          <ol id="favs-list" class=" list"></ol>
           <div class="align-center">
-            <button id="clear-button" onclick="clearButtonAction()" class="button">Clear</button>
+            <button id="clear-button" onclick="ui.clearButtonAction()" class="button">Clear</button>
           </div>
         </div>
       </div>
       <form id="add-form" class="add" onsubmit="addNewPerson()">
         <h2 class="align-center">Add new contact</h2>
         <div>
-          <input id="first-name" oninput="changeAddButtonState()" name="first_name" placeholder="Your first name" maxlength="20">
+          <input id="first-name" oninput="ui.changeAddButtonState()" name="first_name" placeholder="Your first name" maxlength="20">
         </div>
         <div>
-          <input id="last-name" oninput="changeAddButtonState()" name="last_name" placeholder="Your last name" maxlength="20">
+          <input id="last-name" oninput="ui.changeAddButtonState()" name="last_name" placeholder="Your last name" maxlength="20">
         </div>
         <div>
-          <input id="profile-image" oninput="changeAddButtonState()" type="url" name="profile_img" placeholder="Your profile image">
+          <input id="profile-image" oninput="ui.changeAddButtonState()" type="url" name="profile_img" placeholder="Your profile image">
         </div>
-        <button id="add-button" class="button">Add</button>
+        <button id="add-button" onclick="ui.addNewPerson()" class="button" type="button" >Add</button>
       </form>
     </main>
 
@@ -72,7 +72,6 @@
       <p>&#174;Raul Mogos</p>
     </footer>
 
-    <script src="main.js"></script>
-
+    <script src="../bundle.js"></script>
   </body>
 </html>
