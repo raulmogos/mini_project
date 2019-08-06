@@ -21,8 +21,11 @@ export class ContactsService {
 
   init = () => {
     const localStorageObject = localStorageService.getFromLocalStorage(CONTACTS_SERVICE_OBJECT_NAME);
-    this.internalArrayContacts = (localStorageObject && localStorageObject.length) ? localStorageObject.map(item =>
-      createPersonInstance(item)) : data.map(item => createPersonInstance(item)); // eslint-disable-line
+    if (localStorageObject && localStorageObject.length) {
+      this.internalArrayContacts = localStorageObject.map(item => createPersonInstance(item));
+    } else {
+      this.internalArrayContacts = data.map(item => createPersonInstance(item));
+    }
   }
 
   getPersonById = personId => this.internalArrayContacts.find(item => item.id === personId);
@@ -30,7 +33,8 @@ export class ContactsService {
   addPerson = person => this.internalArrayContacts.unshift(person);
 
   removePerson = (personId) => {
-    this.internalArrayContacts.splice(this.internalArrayContacts.findIndex(x => x.id === personId), 1);
+    const index = this.internalArrayContacts.findIndex(x => x.id === personId);
+    this.internalArrayContacts.splice(index, 1);
   };
 
   arePersonsWithLikes = () => this.internalArrayContacts.some(item => item.likes);
@@ -52,9 +56,9 @@ export class ContactsService {
     () => this.internalArrayContacts.filter(person => person.isChecked).forEach(person => this.removePerson(person.id));
 
   get getTopFavsListMap() {
+    const favsMap = {};
     const arrayContactsCopy = [...this.internalArrayContacts];
     arrayContactsCopy.sort((p1, p2) => p1.likes - p2.likes);
-    const favsMap = {};
     arrayContactsCopy.forEach((person) => {
       if (!favsMap[person.likes]) {
         favsMap[person.likes] = [];

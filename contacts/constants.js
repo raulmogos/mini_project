@@ -69,7 +69,11 @@ export const CLASSES = {
   FULL_NAME: 'full-name',
   TRASH: 'trash',
   MARGIN_RIGHT: 'margin-right',
-  ALIGN_CENTER: 'align-center'
+  ALIGN_CENTER: 'align-center',
+  SMALL_BUTTON: 'small-button',
+  MODAL_CONFIRM: 'modal-confirm',
+  MODAL_CONTENT: 'modal-content',
+  NOTIFICATION: 'notification-modal'
 };
 
 export const SYMBOLS = {
@@ -100,6 +104,9 @@ export const MESSAGES = {
   ERROR_NAME: 'Your name contains special characters',
   ERROR_URL: 'Your image is not an url',
   ADDED_SUCCESSFULLY_SUFIX: ' was added successfully',
+  REMOVED_SUCCESSFULLY: 'The contact was removed successfully !',
+  YES: 'yes',
+  NO: 'no'
 };
 
 

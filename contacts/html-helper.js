@@ -12,11 +12,13 @@ import {
   UTILS
 } from './constants';
 import ContactsService from './contacts.service';
-import { isCountEqualToMax, isCountEqualToMin } from './helper.js';
+import {
+  isCountEqualToMax,
+  isCountEqualToMin
+} from './helper.js';
 
 
 export const getElementById = name => document.getElementById(name);
-
 
 const createListItemPersonHTML = (parent, person) => {
   const newLi = document.createElement(TAGS.LIST_ITEM);
@@ -72,13 +74,13 @@ const createCheckboxPersonHTML = (parent, person) => {
 
 const createFullNamePersonHTML = (parent, person) => {
   const fullName = document.createElement(TAGS.SPAN);
+  const firstName = document.createElement(TAGS.SPAN);
+  const lastName = document.createElement(TAGS.SPAN);
   fullName.id = person.fullNameId;
   fullName.className = CLASSES.FULL_NAME;
-  const firstName = document.createElement(TAGS.SPAN);
   firstName.innerHTML = person.firstName;
   firstName.className = CLASSES.MARGIN_RIGHT;
   fullName.appendChild(firstName);
-  const lastName = document.createElement(TAGS.SPAN);
   lastName.innerHTML = person.lastName;
   fullName.appendChild(lastName);
   parent.appendChild(fullName);
@@ -106,10 +108,8 @@ const addToHTMLNewPerson = (person) => {
   getElementById(DOCUMENT_ELEMENTS.CONTACTS.CONTACTS_LIST).appendChild(newLi);
 };
 
-
 export const populateContactsListHTML = () => ContactsService.internalArrayContacts
   .forEach(element => addToHTMLNewPerson(element));
-
 
 const reDrawContactsList = (person = null, target = null) => {
   switch (target) {
@@ -131,7 +131,6 @@ const reDrawContactsList = (person = null, target = null) => {
   }
 };
 
-
 export const reRenderContactsListHTML = (person = null, target = null) => {
   if (!person && !target) {
     getElementById(DOCUMENT_ELEMENTS.CONTACTS.CONTACTS_LIST).innerHTML = UTILS.EMPTY_STRING;
@@ -140,15 +139,12 @@ export const reRenderContactsListHTML = (person = null, target = null) => {
   reDrawContactsList(person, target);
 };
 
-
 export const setButtonStatus = (button, status) => button.disabled = !status; // eslint-disable-line
-
 
 export const resetDeleteAllButtonValueAndState = () => {
   getElementById(DOCUMENT_ELEMENTS.CONTACTS.DELETE_ALL_BUTTON).innerHTML = MESSAGES.DELETE_ALL;
   setButtonStatus(getElementById(DOCUMENT_ELEMENTS.CONTACTS.DELETE_ALL_BUTTON), false);
 };
-
 
 export const changeDeleteAllButtonValueAndState = () => {
   const numberCheckedConstants = ContactsService.getNumberSelectedContacts();
@@ -162,11 +158,9 @@ export const changeDeleteAllButtonValueAndState = () => {
   }
 };
 
-
 export const clearFavouritesListHTML = () => getElementById(DOCUMENT_ELEMENTS.FAVOURITES.FAVS_LIST).innerHTML = UTILS.EMPTY_STRING; // eslint-disable-line
 
-
-const creatParagraphForNumber = (parent, number) => {
+const createParagraphForNumber = (parent, number) => {
   const p = document.createElement(TAGS.PARAGRAPH);
   p.innerHTML = number;
   p.className = CLASSES.ALIGN_CENTER;
@@ -177,7 +171,7 @@ const populateFavouritesListHTML = () => {
   const numbers = Object.keys(ContactsService.getTopFavsListMap).sort((a, b) => b - a);
   numbers.forEach((number, i) => {
     if (i >= NUMBER_TOP) return;
-    creatParagraphForNumber(getElementById(DOCUMENT_ELEMENTS.FAVOURITES.FAVS_LIST), number);
+    createParagraphForNumber(getElementById(DOCUMENT_ELEMENTS.FAVOURITES.FAVS_LIST), number);
     ContactsService.getTopFavsListMap[number].forEach((person) => {
       const li = createListItemPersonHTML(getElementById(DOCUMENT_ELEMENTS.FAVOURITES.FAVS_LIST), person);
       createCountLikesPersonHTML(li, person);
@@ -187,7 +181,6 @@ const populateFavouritesListHTML = () => {
   });
 };
 
-
 export const reRenderFavouritesListHTML = () => {
   clearFavouritesListHTML();
   if (ContactsService.arePersonsWithLikes()) {
@@ -195,18 +188,57 @@ export const reRenderFavouritesListHTML = () => {
   }
 };
 
-
 export const geInput = element => element.value;
-
 
 export const clearFormInputs = () => getElementById(DOCUMENT_ELEMENTS.ADD_FORM.ADD_FORM_MAIN).reset();
 
-
-export const addedSuccessfullyPerson = (person) => alert(`${person.fullName}${MESSAGES.ADDED_SUCCESSFULLY_SUFIX}`); // eslint-disable-line
-
+export const addedSuccessfullyPerson = (person) => notificationModal(`${person.fullName}${MESSAGES.ADDED_SUCCESSFULLY_SUFIX}`); // eslint-disable-line
 
 export const isCheckboxChecked = checkBoxId => getElementById(checkBoxId).checked;
 
-
 export const clearCheckedBoxesHTML = () => ContactsService.getCheckedContacts()
   .forEach(person => getElementById(person.checkBoxId).checked = false); // eslint-disable-line
+
+export const confirmModal = (text, onSuccess = null, onFail = null) => {
+  const modal = document.createElement(TAGS.DIV);
+  const modalContent = document.createElement(TAGS.DIV);
+  const p = document.createElement(TAGS.PARAGRAPH);
+  const yesButton = document.createElement(TAGS.BUTTON);
+  const noButton = document.createElement(TAGS.BUTTON);
+  yesButton.className = CLASSES.SMALL_BUTTON;
+  noButton.className = CLASSES.SMALL_BUTTON;
+  yesButton.innerHTML = MESSAGES.YES;
+  noButton.innerHTML = MESSAGES.NO;
+  yesButton.onclick = () => {
+    modal.remove();
+    if (onSuccess) {
+      onSuccess();
+    }
+  };
+  noButton.onclick = () => {
+    modal.remove();
+    if (onFail) {
+      onFail();
+    }
+  };
+  modal.className = CLASSES.MODAL_CONFIRM;
+  modalContent.className = CLASSES.MODAL_CONTENT;
+  p.innerHTML = text;
+  modalContent.appendChild(p);
+  modalContent.appendChild(yesButton);
+  modalContent.appendChild(noButton);
+  modal.appendChild(modalContent);
+  document.body.appendChild(modal);
+};
+
+export const notificationModal = (text) => {
+  const notification = document.createElement(TAGS.DIV);
+  const p = document.createElement(TAGS.PARAGRAPH);
+  p.innerHTML = text;
+  notification.appendChild(p);
+  notification.className = CLASSES.NOTIFICATION;
+  document.body.appendChild(notification);
+  setTimeout(() => {
+    notification.remove();
+  }, 3000);
+};

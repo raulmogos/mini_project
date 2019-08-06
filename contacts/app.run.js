@@ -11,7 +11,9 @@ import {
   clearFormInputs,
   addedSuccessfullyPerson,
   populateContactsListHTML,
-  getElementById
+  getElementById,
+  confirmModal,
+  notificationModal
 } from './html-helper';
 import {
   getTheNewPerson
@@ -28,9 +30,8 @@ import {
 
 
 function eventsHandlerContacts(event) {
-  const targetId = event.target.id;
   const targetCustom = event.target.custom;
-  const personId = getPersonIdByHTMLElementId(targetId); // eslint-disable-line
+  const personId = getPersonIdByHTMLElementId(event.target.id); // eslint-disable-line
   const person = ContactsService.getPersonById(personId);
   switch (targetCustom) {
     case CUSTOMS.MINUS_BUTTON:
@@ -44,11 +45,11 @@ function eventsHandlerContacts(event) {
       reRenderFavouritesListHTML();
       break;
     case CUSTOMS.TRASH:
-      if (confirm(MESSAGES.ARE_YOU_SURE)) { // eslint-disable-line 
+      confirmModal(MESSAGES.ARE_YOU_SURE, () => {
         ContactsService.removePerson(personId);
         reRenderContactsListHTML(person, targetCustom);
         reRenderFavouritesListHTML();
-      }
+      });
       break;
     case CUSTOMS.CHECKBOX:
       ContactsService.getPersonById(personId).setReversedChecked();
@@ -59,18 +60,17 @@ function eventsHandlerContacts(event) {
   }
 }
 
-
 const deleteAllButtonAction = () => {
-  if (confirm(MESSAGES.ARE_YOU_SURE)) { // eslint-disable-line
+  confirmModal(MESSAGES.ARE_YOU_SURE, () => {
     ContactsService.deleteCheckedContacts();
     reRenderContactsListHTML();
     reRenderFavouritesListHTML();
     resetDeleteAllButtonValueAndState();
-  } else {
+  }, () => {
     clearCheckedBoxesHTML();
     ContactsService.setAllToUnchecked();
     resetDeleteAllButtonValueAndState();
-  }
+  });
 };
 
 const clearButtonAction = () => {
@@ -87,7 +87,6 @@ const changeAddButtonState = () => {
     (firstName && lastName && imageProfile));
 };
 
-
 const addNewPerson = () => {
   try {
     const newPersonObject = getTheNewPerson();
@@ -98,18 +97,17 @@ const addNewPerson = () => {
     changeAddButtonState();
     addedSuccessfullyPerson(newPerson);
   } catch (err) {
-    alert(err.message); // eslint-disable-line
+    notificationModal(err.message);
     clearFormInputs();
+    changeAddButtonState();
   }
 };
-
 
 reRenderFavouritesListHTML();
 
 populateContactsListHTML();
 
 changeDeleteAllButtonValueAndState();
-
 
 window.ui = {
   eventsHandlerContacts,
