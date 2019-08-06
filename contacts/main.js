@@ -386,8 +386,7 @@ function changeDeleteAllButtonValueAndState() {
     button.innerHTML = `Delete All ${numberOfCheckedContacts.toString()}`;
     button.disabled = false;
   } else {
-    button.innerHTML = 'Delete All';
-    button.disabled = true;
+    resetDeleteAllButtonValueAndState(button);
   }
 }
 
