@@ -22,7 +22,7 @@ export const ID_CONSTANTS = {
   ID_LENGTH: 19
 };
 
-export const NUMBER_TOP = 5;
+export const NUMBER_TOP = 3;
 
 
 export const PREFIXES_ID_CONTACTS = {
