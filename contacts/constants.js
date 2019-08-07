@@ -70,6 +70,7 @@ export const CLASSES = {
   TRASH: 'trash',
   MARGIN_RIGHT: 'margin-right',
   ALIGN_CENTER: 'align-center',
+  LIKES_BUTTON: 'likes-button',
   SMALL_BUTTON: 'small-button',
   MODAL_CONFIRM: 'modal-confirm',
   MODAL_CONTENT: 'modal-content',
@@ -104,7 +105,9 @@ export const MESSAGES = {
   ERROR_NAME: 'Your name contains special characters',
   ERROR_URL: 'Your image is not an url',
   ADDED_SUCCESSFULLY_SUFIX: ' was added successfully',
-  REMOVED_SUCCESSFULLY: 'The contact was removed successfully !',
+  REMOVED_SUCCESSFULLY_SUFIX: ' was removed successfully',
+  REMOVED_SUCCESSFULLY_CONTACTS: 'The contacts were removed successfully',
+  EXISTS: 'Person already exists',
   YES: 'yes',
   NO: 'no'
 };

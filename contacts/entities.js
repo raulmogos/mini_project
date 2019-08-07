@@ -70,3 +70,8 @@ export class Person {
   }
 
 }
+
+export const isPersonObjectEquivalent = (firstPerson, secondPerson) => (
+  firstPerson.fullName === secondPerson.fullName
+  || firstPerson.image === secondPerson.image
+);

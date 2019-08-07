@@ -158,6 +158,16 @@ body {
   width: 50%;
 }
 
+.likes-button {
+  border-radius: 6px;
+  background-color: var(--other-background-color);
+  color: var(--main-background-color);
+}
+
+.likes-button[disabled] {
+  background-color: grey;
+}
+
 .button {
   margin: 8px 0px 16px 0px;
   border-radius: 25px;
@@ -165,6 +175,10 @@ body {
   color: var(--main-background-color);
   width: 300px;
   height: 50px;
+}
+
+.button[disabled]{
+  background-color: grey;
 }
 
 .small-button {
@@ -241,6 +255,7 @@ body {
 }
 
 .notification-modal {
+  opacity: 0.8;
   position: fixed;
   z-index: 1;
   padding: 20px;

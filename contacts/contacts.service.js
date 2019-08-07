@@ -2,14 +2,19 @@ import {
   data
 } from './data';
 import {
+  isPersonObjectEquivalent
 } from './entities';
 import {
   CONTACTS_SERVICE_OBJECT_NAME,
+  MESSAGES
 } from './constants';
 import {
   createPersonInstance,
   localStorageService
 } from './helper';
+import {
+  DuplicateError
+} from './exceptions';
 
 
 export class ContactsService {
@@ -30,7 +35,14 @@ export class ContactsService {
 
   getPersonById = personId => this.internalArrayContacts.find(item => item.id === personId);
 
-  addPerson = person => this.internalArrayContacts.unshift(person);
+  isPersonInRepo = person => this.internalArrayContacts.some(x => isPersonObjectEquivalent(x, person));
+
+  addPerson = (person) => {
+    if (this.isPersonInRepo(person)) {
+      throw new DuplicateError(MESSAGES.EXISTS);
+    }
+    this.internalArrayContacts.unshift(person);
+  }
 
   removePerson = (personId) => {
     const index = this.internalArrayContacts.findIndex(x => x.id === personId);
@@ -66,7 +78,7 @@ export class ContactsService {
       favsMap[person.likes].push(person);
     });
     Object.keys(favsMap).forEach(key => favsMap[key]
-      .sort((person1, person2) => person1.fullName > person2.fullName ? 1 : -1));  // eslint-disable-line
+      .sort((person1, person2) => person1.fullName > person2.fullName ? 1 : -1)); // eslint-disable-line
     return favsMap;
   }
 

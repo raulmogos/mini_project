@@ -13,7 +13,9 @@ import {
   populateContactsListHTML,
   getElementById,
   confirmModal,
-  notificationModal
+  notificationModal,
+  changeClearButtonState,
+  deletedSuccessfully
 } from './html-helper';
 import {
   getTheNewPerson
@@ -49,6 +51,7 @@ function eventsHandlerContacts(event) {
         ContactsService.removePerson(personId);
         reRenderContactsListHTML(person, targetCustom);
         reRenderFavouritesListHTML();
+        deletedSuccessfully(person);
       });
       break;
     case CUSTOMS.CHECKBOX:
@@ -66,6 +69,7 @@ const deleteAllButtonAction = () => {
     reRenderContactsListHTML();
     reRenderFavouritesListHTML();
     resetDeleteAllButtonValueAndState();
+    deletedSuccessfully();
   }, () => {
     clearCheckedBoxesHTML();
     ContactsService.setAllToUnchecked();
@@ -77,6 +81,7 @@ const clearButtonAction = () => {
   ContactsService.setAllLikesToZero();
   reRenderContactsListHTML();
   clearFavouritesListHTML();
+  changeClearButtonState();
 };
 
 const changeAddButtonState = () => {
@@ -98,8 +103,6 @@ const addNewPerson = () => {
     addedSuccessfullyPerson(newPerson);
   } catch (err) {
     notificationModal(err.message);
-    clearFormInputs();
-    changeAddButtonState();
   }
 };
 

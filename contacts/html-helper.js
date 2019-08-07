@@ -31,6 +31,7 @@ const createListItemPersonHTML = (parent, person) => {
 const createPlusButtonPersonHTML = (parent, person) => {
   const plusButton = document.createElement(TAGS.BUTTON);
   plusButton.id = person.plusButtonId;
+  plusButton.classList.add(CLASSES.LIKES_BUTTON);
   plusButton.innerHTML = SYMBOLS.PLUS;
   plusButton.custom = CUSTOMS.PLUS_BUTTON;
   plusButton.disabled = isCountEqualToMax(person);
@@ -48,6 +49,7 @@ const createCountLikesPersonHTML = (parent, person) => {
 const createMinusButtonPersonHTML = (parent, person) => {
   const minusButton = document.createElement(TAGS.BUTTON);
   minusButton.id = person.minusButtonId;
+  minusButton.classList.add(CLASSES.LIKES_BUTTON);
   minusButton.innerHTML = SYMBOLS.MINUS;
   minusButton.custom = CUSTOMS.MINUS_BUTTON;
   minusButton.disabled = isCountEqualToMin(person);
@@ -168,9 +170,15 @@ const createParagraphForNumber = (parent, number) => {
 };
 
 const populateFavouritesListHTML = () => {
-  const numbers = Object.keys(ContactsService.getTopFavsListMap).sort((a, b) => b - a);
+  // we get the keys, we convert them into numbers
+  // we sort them
+  const numbers = Object.keys(ContactsService.getTopFavsListMap)
+    .map(stringNumber => Number(stringNumber)).sort((a, b) => b - a);
+  // for every number we add to dom the number and its array of contacts
   numbers.forEach((number, i) => {
-    if (i >= NUMBER_TOP) return;
+    // only numbers that have nonzero likes can be added to dom
+    // max number of favs contacts added to the dom = NUMBER_TOP
+    if (i >= NUMBER_TOP || number === 0) return;
     createParagraphForNumber(getElementById(DOCUMENT_ELEMENTS.FAVOURITES.FAVS_LIST), number);
     ContactsService.getTopFavsListMap[number].forEach((person) => {
       const li = createListItemPersonHTML(getElementById(DOCUMENT_ELEMENTS.FAVOURITES.FAVS_LIST), person);
@@ -181,11 +189,22 @@ const populateFavouritesListHTML = () => {
   });
 };
 
+export const changeClearButtonState = () => {
+  setButtonStatus(
+    getElementById(DOCUMENT_ELEMENTS.FAVOURITES.CLEAR_ALL_BUTTON),
+    ContactsService.arePersonsWithLikes()
+  );
+};
+
 export const reRenderFavouritesListHTML = () => {
+  const arePersonsWithLikes = ContactsService.arePersonsWithLikes();
+  // repopulate
   clearFavouritesListHTML();
-  if (ContactsService.arePersonsWithLikes()) {
+  if (arePersonsWithLikes) {
     populateFavouritesListHTML();
   }
+  // reset the clear button
+  changeClearButtonState();
 };
 
 export const notificationModal = (text) => {
@@ -197,11 +216,20 @@ export const notificationModal = (text) => {
   document.body.appendChild(notification);
   setTimeout(() => {
     notification.remove();
-  }, 3000);
+  }, 5000);
 };
 
+export const deletedSuccessfully = (person = null) => {
+  if (person) {
+    // deleted one contact
+    notificationModal(`${person.fullName}${MESSAGES.REMOVED_SUCCESSFULLY_SUFIX}`);
+  } else {
+    // deleted multiple constacts
+    notificationModal(`${MESSAGES.REMOVED_SUCCESSFULLY_CONTACTS}`);
+  }
+};
 
-export const geInput = element => element.value;
+export const geInput = element => element.value.trim();
 
 export const clearFormInputs = () => getElementById(DOCUMENT_ELEMENTS.ADD_FORM.ADD_FORM_MAIN).reset();
 
@@ -240,4 +268,7 @@ export const confirmModal = (text, onSuccess = null, onFail = null) => {
   modalContent.appendChild(noButton);
   modal.appendChild(modalContent);
   document.body.appendChild(modal);
+  setTimeout(() => {
+    modal.remove();
+  }, 10000);
 };
