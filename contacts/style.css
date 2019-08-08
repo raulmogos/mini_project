@@ -159,9 +159,11 @@ body {
 }
 
 .likes-button {
-  border-radius: 6px;
+  border-radius: 30px;
   background-color: var(--other-background-color);
   color: var(--main-background-color);
+  width: 30px;
+  height: 30px;
 }
 
 .likes-button[disabled] {

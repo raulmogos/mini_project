@@ -189,18 +189,15 @@ const populateFavouritesListHTML = () => {
   });
 };
 
-export const changeClearButtonState = () => {
-  setButtonStatus(
-    getElementById(DOCUMENT_ELEMENTS.FAVOURITES.CLEAR_ALL_BUTTON),
-    ContactsService.arePersonsWithLikes()
-  );
-};
+export const changeClearButtonState = () => setButtonStatus(
+  getElementById(DOCUMENT_ELEMENTS.FAVOURITES.CLEAR_ALL_BUTTON),
+  ContactsService.arePersonsWithLikes()
+);
 
 export const reRenderFavouritesListHTML = () => {
-  const arePersonsWithLikes = ContactsService.arePersonsWithLikes();
-  // repopulate
   clearFavouritesListHTML();
-  if (arePersonsWithLikes) {
+  // repopulate
+  if (ContactsService.arePersonsWithLikes()) {
     populateFavouritesListHTML();
   }
   // reset the clear button
@@ -219,21 +216,23 @@ export const notificationModal = (text) => {
   }, 5000);
 };
 
-export const deletedSuccessfully = (person = null) => {
-  if (person) {
-    // deleted one contact
-    notificationModal(`${person.fullName}${MESSAGES.REMOVED_SUCCESSFULLY_SUFIX}`);
+export const deletedSuccessfully = (deleteMultiple, person = null) => {
+  let message;
+  if (deleteMultiple) {
+    message = MESSAGES.REMOVED_SUCCESSFULLY_CONTACTS;
   } else {
-    // deleted multiple constacts
-    notificationModal(`${MESSAGES.REMOVED_SUCCESSFULLY_CONTACTS}`);
+    message = `${person.fullName}${MESSAGES.REMOVED_SUCCESSFULLY_SUFIX}`;
   }
+  notificationModal(message);
 };
 
-export const geInput = element => element.value.trim();
+export const getInputValue = element => element.value.trim();
 
 export const clearFormInputs = () => getElementById(DOCUMENT_ELEMENTS.ADD_FORM.ADD_FORM_MAIN).reset();
 
-export const addedSuccessfullyPerson = person => notificationModal(`${person.fullName}${MESSAGES.ADDED_SUCCESSFULLY_SUFIX}`); // eslint-disable-line
+export const addedSuccessfullyPerson = person => notificationModal(
+  `${person.fullName}${MESSAGES.ADDED_SUCCESSFULLY_SUFIX}`
+);
 
 export const isCheckboxChecked = checkBoxId => getElementById(checkBoxId).checked;
 

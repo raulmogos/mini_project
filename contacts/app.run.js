@@ -6,7 +6,7 @@ import {
   resetDeleteAllButtonValueAndState,
   clearCheckedBoxesHTML,
   clearFavouritesListHTML,
-  geInput,
+  getInputValue,
   setButtonStatus,
   clearFormInputs,
   addedSuccessfullyPerson,
@@ -51,7 +51,7 @@ function eventsHandlerContacts(event) {
         ContactsService.removePerson(personId);
         reRenderContactsListHTML(person, targetCustom);
         reRenderFavouritesListHTML();
-        deletedSuccessfully(person);
+        deletedSuccessfully(false, person);
       });
       break;
     case CUSTOMS.CHECKBOX:
@@ -69,7 +69,7 @@ const deleteAllButtonAction = () => {
     reRenderContactsListHTML();
     reRenderFavouritesListHTML();
     resetDeleteAllButtonValueAndState();
-    deletedSuccessfully();
+    deletedSuccessfully(true);
   }, () => {
     clearCheckedBoxesHTML();
     ContactsService.setAllToUnchecked();
@@ -85,11 +85,11 @@ const clearButtonAction = () => {
 };
 
 const changeAddButtonState = () => {
-  const firstName = geInput(getElementById(DOCUMENT_ELEMENTS.ADD_FORM.FIRST_NAME));
-  const lastName = geInput(getElementById(DOCUMENT_ELEMENTS.ADD_FORM.LAST_NAME));
-  const imageProfile = geInput(getElementById(DOCUMENT_ELEMENTS.ADD_FORM.IMAGE_PROFILE));
-  setButtonStatus(getElementById(DOCUMENT_ELEMENTS.ADD_FORM.ADD_BUTTON),
-    (firstName && lastName && imageProfile));
+  const firstName = getInputValue(getElementById(DOCUMENT_ELEMENTS.ADD_FORM.FIRST_NAME));
+  const lastName = getInputValue(getElementById(DOCUMENT_ELEMENTS.ADD_FORM.LAST_NAME));
+  const imageProfile = getInputValue(getElementById(DOCUMENT_ELEMENTS.ADD_FORM.IMAGE_PROFILE));
+  const areFieldsFilled = firstName && lastName && imageProfile;
+  setButtonStatus(getElementById(DOCUMENT_ELEMENTS.ADD_FORM.ADD_BUTTON), areFieldsFilled);
 };
 
 const addNewPerson = () => {

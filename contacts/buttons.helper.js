@@ -2,7 +2,7 @@ import {
   DOCUMENT_ELEMENTS,
 } from './constants';
 import {
-  geInput,
+  getInputValue,
   getElementById
 } from './html-helper';
 import {
@@ -15,17 +15,17 @@ import {
 
 
 export const getTheNewPerson = () => {
-  const firstName = geInput(getElementById(DOCUMENT_ELEMENTS.ADD_FORM.FIRST_NAME));
+  const firstName = getInputValue(getElementById(DOCUMENT_ELEMENTS.ADD_FORM.FIRST_NAME));
   validateName(firstName);
-  const lastName = geInput(getElementById(DOCUMENT_ELEMENTS.ADD_FORM.LAST_NAME));
+  const lastName = getInputValue(getElementById(DOCUMENT_ELEMENTS.ADD_FORM.LAST_NAME));
   validateName(lastName);
-  const image = geInput(getElementById(DOCUMENT_ELEMENTS.ADD_FORM.IMAGE_PROFILE));
+  const image = getInputValue(getElementById(DOCUMENT_ELEMENTS.ADD_FORM.IMAGE_PROFILE));
   validateImageUrl(image);
   return {
-    id: generateUniqueID(),
     firstName,
     lastName,
     image,
+    id: generateUniqueID(),
     likes: 0,
     isChecked: false
   };
