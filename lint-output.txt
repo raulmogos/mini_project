@@ -1,0 +1,4 @@
+
+> mini_project@1.0.0 lint D:\git\JS-for-contacts\mini_project
+> node ./node_modules/eslint/bin/eslint.js ./contacts --ext .js
+
